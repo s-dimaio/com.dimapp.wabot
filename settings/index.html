@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    /* Tooltip styling */
+    .homey-form-label-wrapper {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .homey-form-group .homey-form-label {
+      margin-bottom: 0;
+    }
+
+    .tooltip-icon {
+      display: inline-block;
+      font-size: 14px;
+      line-height: 1;
+      color: #9ca3af;
+      cursor: pointer;
+      position: relative;
+      vertical-align: baseline;
+    }
+
+    .tooltip-icon:hover {
+      color: #6b7280;
+    }
+
+    .tooltip-icon::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: normal;
+      line-height: 1.4;
+      width: 220px;
+      text-align: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .tooltip-icon::before {
+      content: '';
+      position: absolute;
+      bottom: 105%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: #333 transparent transparent transparent;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .tooltip-icon:hover::after,
+    .tooltip-icon:hover::before {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Webhook URL row */
+    .webhook-url-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .webhook-url-row input {
+      flex: 1;
+    }
+
+    .webhook-url-row button {
+      flex-shrink: 0;
+    }
+
+    /* SPA view management */
+    .view {
+      display: none;
+    }
+
+    .view.is-active {
+      display: block;
+    }
+
+    /* Toast notification styles */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 20px;
+      background-color: #28a745;
+      color: white;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 1000;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .toast.success {
+      background-color: #28a745;
+    }
+
+    .toast.error {
+      background-color: #dc3545;
+    }
+
+    .toast.warning {
+      background-color: #ffc107;
+      color: #856404;
+    }
+  </style>
+  <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+</head>
+
+<body>
+
+  <!-- View 1: Settings -->
+  <div id="view-settings" class="view is-active">
+    <form class="homey-form">
+      <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend" data-i18n="settings.title">WhatsApp Bot Settings</legend>
+
+        <div class="homey-form-group">
+          <p class="homey-text-regular" data-i18n="settings.description">Configure your Meta WhatsApp Business API
+            credentials here.</p>
+        </div>
+
+        <div class="homey-form-group">
+          <div class="homey-form-label-wrapper">
+            <label class="homey-form-label" for="access_token" data-i18n="settings.access_token">Access Token</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.access_token_hint">&#9432;</span>
+          </div>
+          <input class="homey-form-input" id="access_token" type="text" value="" />
+        </div>
+
+        <div class="homey-form-group">
+          <div class="homey-form-label-wrapper">
+            <label class="homey-form-label" for="phone_id" data-i18n="settings.phone_id">Phone Number ID</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.phone_id_hint">&#9432;</span>
+          </div>
+          <input class="homey-form-input" id="phone_id" type="text" value="" />
+        </div>
+
+        <div class="homey-form-group">
+          <div class="homey-form-label-wrapper">
+            <label class="homey-form-label" for="webhook_url" data-i18n="settings.webhook_url_label">Webhook URL</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.webhook_url_hint">&#9432;</span>
+          </div>
+          <div class="webhook-url-row">
+            <input class="homey-form-input" id="webhook_url" type="text" readonly />
+            <button id="copy_webhook_url" class="homey-button-secondary" data-i18n="settings.webhook_url_copy"
+              type="button">Copy</button>
+          </div>
+        </div>
+
+        <div class="homey-form-group">
+          <div class="homey-form-label-wrapper">
+            <label class="homey-form-label" for="verify_token" data-i18n="settings.verify_token">Verify Token</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.verify_token_hint">&#9432;</span>
+          </div>
+          <input class="homey-form-input" id="verify_token" type="text" value="" />
+        </div>
+
+        <div class="homey-form-group">
+          <button id="save" class="homey-button-primary-full" data-i18n="settings.save" type="button">Save
+            Settings</button>
+        </div>
+
+        <div class="homey-form-group">
+          <button id="open_guide" class="homey-button-transparent" style="padding-left: 0;"
+            data-i18n="settings.guide_open" type="button">Setup Guide →</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+  <!-- View 2: Setup Guide -->
+  <div id="view-guide" class="view">
+    <header class="homey-header">
+      <h1 class="homey-title" data-i18n="settings.guide_title">Setup Guide</h1>
+    </header>
+
+    <form class="homey-form">
+      <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend" data-i18n="settings.guide_part1_title">Part 1: Create the Meta App</legend>
+        <div class="homey-form-group">
+          <ol class="homey-text-regular">
+            <li data-i18n="settings.guide_part1_step1"></li>
+            <li data-i18n="settings.guide_part1_step2"></li>
+            <li data-i18n="settings.guide_part1_step3"></li>
+            <li data-i18n="settings.guide_part1_step4"></li>
+            <li data-i18n="settings.guide_part1_step5"></li>
+            <li data-i18n="settings.guide_part1_step6"></li>
+          </ol>
+        </div>
+      </fieldset>
+
+      <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend" data-i18n="settings.guide_part2_title">Part 2: Permanent Access Token
+        </legend>
+        <div class="homey-form-group">
+          <ol class="homey-text-regular">
+            <li data-i18n="settings.guide_part2_step1"></li>
+            <li data-i18n="settings.guide_part2_step2"></li>
+            <li data-i18n="settings.guide_part2_step3"></li>
+            <li data-i18n="settings.guide_part2_step4"></li>
+            <li data-i18n="settings.guide_part2_step5"></li>
+            <li data-i18n="settings.guide_part2_step6"></li>
+          </ol>
+        </div>
+      </fieldset>
+
+      <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend" data-i18n="settings.guide_part3_title">Part 3: Configure Homey &amp; Webhook
+        </legend>
+        <div class="homey-form-group">
+          <ol class="homey-text-regular">
+            <li data-i18n="settings.guide_part3_step1"></li>
+            <li data-i18n="settings.guide_part3_step2"></li>
+            <li data-i18n="settings.guide_part3_step3"></li>
+            <li data-i18n="settings.guide_part3_step4"></li>
+            <li data-i18n="settings.guide_part3_step5"></li>
+          </ol>
+        </div>
+      </fieldset>
+
+      <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend" data-i18n="settings.guide_part4_title">Part 4: First Bot Activation
+        </legend>
+        <div class="homey-form-group">
+          <ol class="homey-text-regular">
+            <li data-i18n="settings.guide_part4_step1"></li>
+            <li data-i18n="settings.guide_part4_step2"></li>
+            <li data-i18n="settings.guide_part4_step3"></li>
+            <li data-i18n="settings.guide_part4_step4"></li>
+            <li data-i18n="settings.guide_part4_step5"></li>
+          </ol>
+        </div>
+      </fieldset>
+
+      <div class="homey-form-group" style="margin-top: 20px;">
+        <button id="back_btn" class="homey-button-transparent" style="padding-left: 0;" data-i18n="settings.guide_back"
+          type="button">← Back to Settings</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast"></div>
+
+  <script type="text/javascript">
+    function onHomeyReady(Homey) {
+      Homey.ready();
+
+      /**
+       * Show a toast notification with customizable message and type
+       * @private
+       * @param {string} message - The message to display in the toast
+       * @param {string} [type='success'] - The type of toast: 'success', 'error', or 'warning'
+       */
+      function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+
+        // Remove existing type classes
+        toast.classList.remove('success', 'error', 'warning');
+
+        // Add appropriate type class
+        toast.classList.add(type);
+        toast.classList.add('show');
+
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      }
+
+      // Translate Tooltips
+      document.querySelectorAll('.tooltip-icon').forEach(el => {
+        const key = el.getAttribute('data-i18n-tooltip');
+        if (key) el.setAttribute('data-tooltip', Homey.__(key));
+      });
+
+      // SPA Navigation
+      const viewSettings = document.getElementById('view-settings');
+      const viewGuide = document.getElementById('view-guide');
+
+      document.getElementById('open_guide').addEventListener('click', function () {
+        viewSettings.classList.remove('is-active');
+        viewGuide.classList.add('is-active');
+      });
+
+      document.getElementById('back_btn').addEventListener('click', function () {
+        viewGuide.classList.remove('is-active');
+        viewSettings.classList.add('is-active');
+      });
+
+      // External Links
+      document.body.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('open-meta-dev')) {
+          e.preventDefault();
+          Homey.popup('https://developers.facebook.com/');
+        } else if (e.target && e.target.classList.contains('open-meta-biz')) {
+          e.preventDefault();
+          Homey.popup('https://business.facebook.com/settings');
+        }
+      });
+
+      // Load existing settings
+      var access_token_el = document.getElementById('access_token');
+      var phone_id_el = document.getElementById('phone_id');
+      var verify_token_el = document.getElementById('verify_token');
+      var webhook_url_el = document.getElementById('webhook_url');
+      var copy_btn_el = document.getElementById('copy_webhook_url');
+
+      Homey.get('access_token', function (err, value) {
+        if (err) return showToast(err.message || err, 'error');
+        if (value) access_token_el.value = value;
+      });
+
+      Homey.get('phone_id', function (err, value) {
+        if (err) return showToast(err.message || err, 'error');
+        if (value) phone_id_el.value = value;
+      });
+
+      Homey.get('verify_token', function (err, value) {
+        if (err) return showToast(err.message || err, 'error');
+        if (value) verify_token_el.value = value;
+      });
+
+      // Fetch the Webhook URL from the app's API
+      Homey.api('GET', '/webhookUrl', null, function (err, url) {
+        if (err) {
+          webhook_url_el.value = Homey.__('settings.webhook_url_loading') || '...';
+        } else {
+          webhook_url_el.value = url;
+        }
+      });
+
+      // Copy Webhook URL to clipboard
+      copy_btn_el.addEventListener('click', function () {
+        if (webhook_url_el.value) {
+          navigator.clipboard.writeText(webhook_url_el.value).catch(function () {
+            // Fallback for older browsers
+            webhook_url_el.select();
+            document.execCommand('copy');
+          });
+        }
+      });
+
+      // Save settings
+      document.getElementById('save').addEventListener('click', function () {
+        const verifyTokenVal = verify_token_el.value;
+        if (verifyTokenVal && verifyTokenVal.indexOf(' ') >= 0) {
+          return showToast(Homey.__('settings.error_verify_token_spaces') || 'The Verify Token cannot contain spaces.', 'error');
+        }
+
+        Homey.set('access_token', access_token_el.value, function (err) {
+          if (err) return showToast(err.message || err, 'error');
+        });
+        Homey.set('phone_id', phone_id_el.value, function (err) {
+          if (err) return showToast(err.message || err, 'error');
+        });
+        Homey.set('verify_token', verify_token_el.value, function (err) {
+          if (err) return showToast(err.message || err, 'error');
+        });
+
+        // Show toast instead of alert on success
+        showToast(Homey.__('settings.save_success') || 'Settings saved successfully', 'success');
+      });
+    }
+  </script>
+
+</body>
+
+</html>

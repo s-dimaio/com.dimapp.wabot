@@ -1,0 +1,107 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "com.dimapp.wabot",
+  "version": "1.0.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "WhatsApp Bot"
+  },
+  "description": {
+    "en": "Connect your Homey to WhatsApp effortlessly",
+    "it": "Connetti il tuo Homey a WhatsApp in modo semplice"
+  },
+  "brandColor": "#25D366",
+  "category": [
+    "internet"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Simone Di Maio",
+    "email": "simone.dimaio77@gmail.com"
+  },
+  "api": {
+    "getWebhook": {
+      "method": "GET",
+      "path": "/webhook",
+      "public": true
+    },
+    "postWebhook": {
+      "method": "POST",
+      "path": "/webhook",
+      "public": true
+    },
+    "getWebhookUrl": {
+      "method": "GET",
+      "path": "/webhookUrl"
+    }
+  },
+  "flow": {
+    "triggers": [
+      {
+        "title": {
+          "en": "WhatsApp message received",
+          "it": "Messaggio WhatsApp ricevuto"
+        },
+        "tokens": [
+          {
+            "name": "message_text",
+            "type": "string",
+            "title": {
+              "en": "Message Text",
+              "it": "Testo Messaggio"
+            }
+          },
+          {
+            "name": "sender_number",
+            "type": "string",
+            "title": {
+              "en": "Sender Number",
+              "it": "Numero Mittente"
+            }
+          }
+        ],
+        "id": "whatsapp_message_received"
+      }
+    ],
+    "actions": [
+      {
+        "title": {
+          "en": "Send WhatsApp message",
+          "it": "Invia messaggio WhatsApp"
+        },
+        "titleFormatted": {
+          "en": "Send [[message_text]] to [[recipient_number]]",
+          "it": "Invia [[message_text]] a [[recipient_number]]"
+        },
+        "args": [
+          {
+            "name": "recipient_number",
+            "type": "text",
+            "title": {
+              "en": "Recipient Number (e.g. 13331234567)",
+              "it": "Numero Destinatario (es. 393331234567)"
+            }
+          },
+          {
+            "name": "message_text",
+            "type": "text",
+            "title": {
+              "en": "Message",
+              "it": "Messaggio"
+            }
+          }
+        ],
+        "id": "send_whatsapp_message"
+      }
+    ]
+  }
+}

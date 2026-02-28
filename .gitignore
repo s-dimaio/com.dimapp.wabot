@@ -1,0 +1,7 @@
+/env.json
+/node_modules/
+/.homeybuild/
+/images/
+/.env
+info.txt
+*.ps1

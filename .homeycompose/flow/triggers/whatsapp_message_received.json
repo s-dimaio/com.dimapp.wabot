@@ -1,0 +1,24 @@
+{
+    "title": {
+        "en": "WhatsApp message received",
+        "it": "Messaggio WhatsApp ricevuto"
+    },
+    "tokens": [
+        {
+            "name": "message_text",
+            "type": "string",
+            "title": {
+                "en": "Message Text",
+                "it": "Testo Messaggio"
+            }
+        },
+        {
+            "name": "sender_number",
+            "type": "string",
+            "title": {
+                "en": "Sender Number",
+                "it": "Numero Mittente"
+            }
+        }
+    ]
+}

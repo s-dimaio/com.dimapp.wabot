@@ -1,0 +1,28 @@
+{
+    "title": {
+        "en": "Send WhatsApp message",
+        "it": "Invia messaggio WhatsApp"
+    },
+    "titleFormatted": {
+        "en": "Send [[message_text]] to [[recipient_number]]",
+        "it": "Invia [[message_text]] a [[recipient_number]]"
+    },
+    "args": [
+        {
+            "name": "recipient_number",
+            "type": "text",
+            "title": {
+                "en": "Recipient Number (e.g. 13331234567)",
+                "it": "Numero Destinatario (es. 393331234567)"
+            }
+        },
+        {
+            "name": "message_text",
+            "type": "text",
+            "title": {
+                "en": "Message",
+                "it": "Messaggio"
+            }
+        }
+    ]
+}
