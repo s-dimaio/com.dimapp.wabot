@@ -1,0 +1,2 @@
+Questa app permette di far dialogare il tuo Homey con un bot di WhatsApp.
+Potrai quindi inviare messaggi di testo via WhatsApp alla tua smart home e ricevere le relative risposte. Potrai così costruire dei Flow per controllare la tua casa via WhatsApp.

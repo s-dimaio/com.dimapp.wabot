@@ -11,8 +11,8 @@
     "en": "WhatsApp Bot"
   },
   "description": {
-    "en": "Connect your Homey to WhatsApp effortlessly",
-    "it": "Connetti il tuo Homey a WhatsApp in modo semplice"
+    "en": "Connect your Homey to a WhatsApp bot to control your smart home",
+    "it": "Connetti il tuo Homey ad un bot WhatsApp per controllare la tua casa domotica"
   },
   "brandColor": "#25D366",
   "category": [
