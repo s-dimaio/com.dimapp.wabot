@@ -5,3 +5,4 @@
 /.env
 info.txt
 *.ps1
+.homeyignore

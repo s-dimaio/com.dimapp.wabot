@@ -1,6 +1,6 @@
 {
   "id": "com.dimapp.wabot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "platforms": [
@@ -41,6 +41,17 @@
     "getWebhookUrl": {
       "method": "GET",
       "path": "/webhookUrl"
+    }
+  },
+  "source": "https://github.com/s-dimaio/com.dimapp.wabot",
+  "bugs": {
+    "url": "https://github.com/s-dimaio/com.dimapp.wabot/issues"
+  },
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "sdimaio77"
+      }
     }
   }
 }

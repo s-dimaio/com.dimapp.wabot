@@ -1,5 +1,10 @@
 {
   "1.0.1": {
-    "en": "First version!"
+    "en": "First version!",
+    "it": "Prima versione!"
+  },
+  "1.0.2": {
+    "en": "Added automatic 'mark as read' (double blue ticks) for incoming messages.",
+    "it": "Aggiunto il 'segna come letto' automatico (doppie spunte blu) per i messaggi in arrivo."
   }
 }
