@@ -17,9 +17,43 @@ module.exports = class WhatsAppBotApp extends Homey.App {
 
     // Register Flow Action Card
     const sendMessageAction = this.homey.flow.getActionCard('send_whatsapp_message');
+
+    // Provide authorized users to the autocomplete dropdown for the contact field
+    sendMessageAction.registerArgumentAutocompleteListener('recipient_contact', async (query, args) => {
+      const users = this.getAllowedUsers();
+      const results = users.map(user => ({
+        name: user.name || user.id,
+        description: user.id,
+        id: user.id
+      }));
+
+      // Filter based on user search query
+      const lowerQuery = query.toLowerCase();
+      return results.filter(res =>
+        res.name.toLowerCase().includes(lowerQuery) ||
+        res.id.includes(lowerQuery)
+      );
+    });
+
     sendMessageAction.registerRunListener(async (args, state) => {
       this.log('Action card triggered: send_whatsapp_message');
-      await this.sendWhatsappMessage(args.recipient_number, args.message_text);
+
+      const byContact = args.recipient_contact;
+      const byNumber = args.recipient_number;
+
+      const hasContact = typeof byContact === 'object' && byContact !== null && byContact.id;
+      const hasNumber = typeof byNumber === 'string' && byNumber.trim() !== '';
+
+      if (hasContact && hasNumber) {
+        throw new Error(this.homey.__('settings.action_error_both_recipients'));
+      }
+      if (!hasContact && !hasNumber) {
+        throw new Error(this.homey.__('settings.action_error_no_recipient'));
+      }
+
+      const recipient = hasContact ? byContact.id : byNumber.trim();
+
+      await this.sendWhatsappMessage(recipient, args.message_text);
       return true;
     });
   }
@@ -133,6 +167,44 @@ module.exports = class WhatsAppBotApp extends Homey.App {
     } catch (error) {
       this.error('Network or API Error sending WhatsApp message:', error);
       throw error;
+    }
+  }
+
+  /**
+   * Retrieves the list of allowed users from Homey settings.
+   * @returns {Array<{id: string, name: string}>}
+   * @public
+   */
+  getAllowedUsers() {
+    return this.homey.settings.get('allowed_users') || [];
+  }
+
+  /**
+   * Checks if a phone number is authorized to use the bot.
+   * @param {string} phone - The phone number to check.
+   * @returns {boolean} True if allowed, false otherwise.
+   * @public
+   */
+  isUserAllowed(phone) {
+    const users = this.getAllowedUsers();
+    return users.some(u => u.id === phone);
+  }
+
+  /**
+   * Adds a new phone number to the allowed users list.
+   * @param {string} phone - The phone number to add.
+   * @param {string} [name] - Optional name for the user.
+   * @public
+   */
+  async saveAllowedUser(phone, name = null) {
+    const users = this.getAllowedUsers();
+    if (!users.some(u => u.id === phone)) {
+      users.push({
+        id: phone,
+        name: name || phone
+      });
+      this.homey.settings.set('allowed_users', users);
+      this.log(`User ${phone} added to allowed users.`);
     }
   }
 

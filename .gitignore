@@ -6,3 +6,6 @@
 info.txt
 *.ps1
 .homeyignore
+jsconfig.json
+HOMEY_POST.md
+META_SETUP_GUIDE.md

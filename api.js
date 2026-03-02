@@ -95,8 +95,33 @@ module.exports = {
                 // Mark message as read (double blue tick) immediately
                 homey.app.markMessageAsRead(msgId).catch(() => { });
 
-                // Pass data to app instance
-                await homey.app.triggerMessageReceived(msg_body, from);
+                // Access Control Check
+                if (homey.app.isUserAllowed(from)) {
+                    // Pass data to app instance
+                    await homey.app.triggerMessageReceived(msg_body, from);
+                } else {
+                    const verifyToken = homey.settings.get('verify_token');
+                    if (msg_body && msg_body.trim() === `/register ${verifyToken}`) {
+                        // Register the user
+                        await homey.app.saveAllowedUser(from);
+                        await homey.app.sendWhatsappMessage(from, homey.__('bot.registration_success'));
+                        homey.log(`New user registered via webhook: ${from}`);
+                    } else if (msg_body && msg_body.trim().startsWith('/register')) {
+                        // Wrong token attempt
+                        homey.log(`Unauthorized message attempt from ${from}. Wrong verify token in /register.`);
+                        await homey.app.sendWhatsappMessage(
+                            from,
+                            homey.__('bot.invalid_token')
+                        ).catch(e => homey.error('Failed to send wrong token reply', e));
+                    } else {
+                        // Reject and send instructions
+                        homey.log(`Unauthorized message attempt from ${from}. Replied with /register instructions.`);
+                        await homey.app.sendWhatsappMessage(
+                            from,
+                            homey.__('bot.registration_required')
+                        ).catch(e => homey.error('Failed to send unauthorized reply', e));
+                    }
+                }
             }
 
             return 'EVENT_RECEIVED';
@@ -104,6 +129,39 @@ module.exports = {
             homey.error('Error parsing POST Webhook body:', e);
             return 'OK'; // Don't throw, otherwise Meta retries
         }
+    },
+
+    /**
+     * DELETE /api/app/com.dimapp.wabot/user/:phone
+     * Removes a phone number from the authorized users list.
+     * Called by the Settings page via Homey.api().
+     * @param {object} args - Arguments passed by Homey API.
+     * @param {object} args.homey - Homey instance.
+     * @param {object} args.params - URL parameters.
+     * @param {string} args.params.phone - The phone number to remove (URL-encoded).
+     * @returns {Promise<{success: boolean, error?: string}>} Result of the operation.
+     * @example
+     * // In settings/index.html:
+     * // Homey.api('DELETE', '/user/' + encodeURIComponent(phone), null, callback);
+     * @public
+     */
+    async deleteUser({ homey, params }) {
+        const phone = params.phone;
+
+        if (!phone) {
+            return { success: false, error: 'Phone number is required' };
+        }
+
+        const users = homey.settings.get('allowed_users') || [];
+        const filtered = users.filter(u => u.id !== phone);
+
+        if (filtered.length === users.length) {
+            return { success: false, error: `User ${phone} not found` };
+        }
+
+        homey.settings.set('allowed_users', filtered);
+        homey.log(`User ${phone} removed from allowed users via Settings page.`);
+        return { success: true };
     },
 
 };

@@ -35,38 +35,25 @@ The temporary token from the API Setup page expires every 24 hours. For the Home
 
 ---
 
-## Part 3: Configure the Homey App
+## Part 3: Configure Homey and the Webhook
 
-1. Install this App on your Homey.
-2. Go to **Settings** → **WhatsApp Bot**.
-3. Paste the **Permanent Access Token** into the **Access Token** field.
-4. Paste the **Phone Number ID** into the **Phone Number ID** field.
-5. Choose a custom **Verify Token** (any string without spaces, e.g. `my_homey_token`).
-6. Note down the **Webhook URL** shown in the settings page.
-7. Click **Save Settings**.
+1. Go to **Settings** → **WhatsApp Bot** in the Homey app and fill in the **Permanent Access Token** and the **Phone Number ID**.
+2. From the same Configuration page, copy the **Webhook URL** and choose a **Verify Token** of your choice (a string without spaces, e.g. `my_homey_token`). You will need this token both to verify the webhook on Meta and later to register with the bot. Click **Save Settings**.
+3. Go back to your Meta App → **Use Cases** → **Customize** → **Configuration** and scroll to the **Webhook** section.
+4. Paste the **Webhook URL** as the **Callback URL** and enter your **Verify Token**. Click **Verify and Save**. Meta will contact your Homey to verify the endpoint.
+5. Once verification is complete, go back to the **Configuration** menu and enable the subscription for the **"messages"** webhook field.
 
 ---
 
-## Part 4: Configure the Webhook on Meta
+## Part 4: First Bot Activation
 
-1. In your Meta App Dashboard, go to **WhatsApp > Configuration** in the left sidebar.
-2. Under the Webhook section, click **Edit**.
-3. Paste your Homey **Webhook URL** as the **Callback URL**.
-4. Paste your **Verify Token** (the same string you chose in the Homey settings).
-5. Click **Verify and Save**. Meta will contact your Homey to verify the endpoint.
-6. Once saved, click **Manage** next to Webhook fields, find the **"messages"** row and click **Subscribe**.
-
----
-
-## Part 5: First Bot Activation
-
-The bot's test number is not registered in your WhatsApp contacts by default. You need to initiate the first chat from the Meta portal:
-
-1. In the Meta App Dashboard, go to **WhatsApp > API Setup**.
-2. Generate a **temporary access token** by clicking the button in the top-right area and following the wizard. *(This token expires in 24 hours and is only needed for this initial step.)*
+1. In your Meta App → **Use Cases** → **Customize** → **API Setup**.
+2. Generate a **temporary access token** by clicking the button in the top-right corner and following the wizard. *(This token expires in 24 hours and is only needed for this step.)*
 3. In the **"To"** dropdown (Step 1), select your personal phone number. If not present, add it and verify it with the SMS code.
-4. Click **Send message** (Step 2) to send a test message to your phone.
-5. Open WhatsApp on your phone and **reply to the message** you received from the bot number. The bot is now active and saved in your contacts.
+4. Click **Send Message** (Step 2).
+5. You will receive a **"Hello World"** message on WhatsApp. The bot is now active, but you must register before using it.
+6. Reply to the welcome message by sending `/register [secret_code]` to the bot, where `secret_code` is the **Verify Token** you chose in Part 3.
+7. The bot will reply with a confirmation message and will finally be ready to use!
 
 Congratulations! Your Bot is now fully operational!
 

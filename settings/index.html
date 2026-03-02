@@ -134,14 +134,193 @@
       background-color: #ffc107;
       color: #856404;
     }
+
+    /* User Management card items */
+    .users-list-container {
+      margin-top: 15px;
+    }
+
+    .user-item {
+      display: block;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      padding: 12px;
+      background-color: rgba(255, 255, 255, 0.5);
+      transition: background-color 0.2s;
+    }
+
+    .user-item:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .user-phone-label {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #1f6ac1;
+      word-break: break-all;
+    }
+
+    .user-item-details {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .user-item-details .homey-form-input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .user-item-details .homey-button-danger {
+      flex-shrink: 0;
+    }
+
+    /* Main Menu list items */
+    .menu-list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 16px;
+      background-color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .menu-item:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    .menu-item:active {
+      transform: scale(0.98);
+    }
+
+    .menu-item-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .menu-item-icon {
+      font-size: 24px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #25D366;
+      /* WhatsApp Green */
+    }
+
+    .menu-item-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .menu-item-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .menu-item-subtitle {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .menu-item-arrow {
+      color: #999;
+      font-size: 20px;
+      font-weight: bold;
+    }
   </style>
   <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
 </head>
 
 <body>
 
+  <!-- View 0: Main Menu -->
+  <div id="view-menu" class="view is-active">
+    <form class="homey-form">
+      <fieldset class="homey-form-fieldset">
+
+        <div class="menu-list-container">
+          <div id="nav_config" class="menu-item" role="button" tabindex="0">
+            <div class="menu-item-content">
+              <div class="menu-item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                  </path>
+                </svg>
+              </div>
+              <div class="menu-item-text">
+                <span class="menu-item-title" data-i18n="settings.nav_config">Configuration</span>
+                <span class="menu-item-subtitle" data-i18n="settings.nav_config_desc">API credentials and webhook</span>
+              </div>
+            </div>
+            <div class="menu-item-arrow">›</div>
+          </div>
+
+          <div id="nav_users" class="menu-item" role="button" tabindex="0">
+            <div class="menu-item-content">
+              <div class="menu-item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <div class="menu-item-text">
+                <span class="menu-item-title" data-i18n="settings.nav_users">User Management</span>
+                <span class="menu-item-subtitle" data-i18n="settings.nav_users_desc">Manage authorized numbers</span>
+              </div>
+            </div>
+            <div class="menu-item-arrow">›</div>
+          </div>
+
+          <div id="open_guide_menu" class="menu-item" role="button" tabindex="0">
+            <div class="menu-item-content">
+              <div class="menu-item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+              </div>
+              <div class="menu-item-text">
+                <span class="menu-item-title" data-i18n="settings.guide_title">Setup Guide</span>
+                <span class="menu-item-subtitle" data-i18n="settings.guide_desc">Instructions to configure the
+                  bot</span>
+              </div>
+            </div>
+            <div class="menu-item-arrow">›</div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
   <!-- View 1: Settings -->
-  <div id="view-settings" class="view is-active">
+  <div id="view-settings" class="view">
     <form class="homey-form">
       <fieldset class="homey-form-fieldset">
         <legend class="homey-form-legend" data-i18n="settings.title">WhatsApp Bot Settings</legend>
@@ -192,9 +371,36 @@
             Settings</button>
         </div>
 
+        <div class="homey-form-group" style="margin-top: 20px;">
+          <button id="back_from_config" class="homey-button-transparent" style="padding-left: 0;"
+            data-i18n="settings.guide_back" type="button">← Back to Menu</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+  <!-- View 1.5: User Management -->
+  <div id="view-users" class="view">
+    <form class="homey-form">
+      <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend" data-i18n="settings.users_title">User Management</legend>
         <div class="homey-form-group">
-          <button id="open_guide" class="homey-button-transparent" style="padding-left: 0;"
-            data-i18n="settings.guide_open" type="button">Setup Guide →</button>
+          <p class="homey-text-regular" data-i18n="settings.users_description">Manage authorized numbers that can use
+            the bot.</p>
+        </div>
+
+        <div id="users_container" style="margin-bottom: 20px;">
+          <!-- Interactively populated -->
+        </div>
+
+        <div class="homey-form-group">
+          <button id="save_users" class="homey-button-primary-full" data-i18n="settings.save_users" type="button">Save
+            Names</button>
+        </div>
+
+        <div class="homey-form-group" style="margin-top: 20px;">
+          <button id="back_from_users" class="homey-button-transparent" style="padding-left: 0;"
+            data-i18n="settings.guide_back" type="button">← Back to Menu</button>
         </div>
       </fieldset>
     </form>
@@ -260,13 +466,15 @@
             <li data-i18n="settings.guide_part4_step3"></li>
             <li data-i18n="settings.guide_part4_step4"></li>
             <li data-i18n="settings.guide_part4_step5"></li>
+            <li data-i18n="settings.guide_part4_step6"></li>
+            <li data-i18n="settings.guide_part4_step7"></li>
           </ol>
         </div>
       </fieldset>
 
       <div class="homey-form-group" style="margin-top: 20px;">
-        <button id="back_btn" class="homey-button-transparent" style="padding-left: 0;" data-i18n="settings.guide_back"
-          type="button">← Back to Settings</button>
+        <button id="back_from_guide" class="homey-button-transparent" style="padding-left: 0;"
+          data-i18n="settings.guide_back" type="button">← Back to Menu</button>
       </div>
     </form>
   </div>
@@ -307,18 +515,26 @@
       });
 
       // SPA Navigation
+      const viewMenu = document.getElementById('view-menu');
       const viewSettings = document.getElementById('view-settings');
+      const viewUsers = document.getElementById('view-users');
       const viewGuide = document.getElementById('view-guide');
 
-      document.getElementById('open_guide').addEventListener('click', function () {
-        viewSettings.classList.remove('is-active');
-        viewGuide.classList.add('is-active');
-      });
+      function switchView(targetView) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('is-active'));
+        targetView.classList.add('is-active');
+      }
 
-      document.getElementById('back_btn').addEventListener('click', function () {
-        viewGuide.classList.remove('is-active');
-        viewSettings.classList.add('is-active');
+      document.getElementById('nav_config').addEventListener('click', () => switchView(viewSettings));
+      document.getElementById('nav_users').addEventListener('click', () => {
+        loadUsers();
+        switchView(viewUsers);
       });
+      document.getElementById('open_guide_menu').addEventListener('click', () => switchView(viewGuide));
+
+      document.getElementById('back_from_config').addEventListener('click', () => switchView(viewMenu));
+      document.getElementById('back_from_users').addEventListener('click', () => switchView(viewMenu));
+      document.getElementById('back_from_guide').addEventListener('click', () => switchView(viewMenu));
 
       // External Links
       document.body.addEventListener('click', function (e) {
@@ -392,6 +608,113 @@
 
         // Show toast instead of alert on success
         showToast(Homey.__('settings.save_success') || 'Settings saved successfully', 'success');
+      });
+
+      // User Management logic
+      let currentUsers = [];
+
+      function renderUsers() {
+        const container = document.getElementById('users_container');
+        container.innerHTML = '';
+
+        if (currentUsers.length === 0) {
+          const p = document.createElement('p');
+          p.className = 'homey-text-small';
+          p.style.fontStyle = 'italic';
+          p.textContent = Homey.__('settings.users_empty');
+          container.appendChild(p);
+          return;
+        }
+
+        const listWrapper = document.createElement('div');
+        listWrapper.className = 'users-list-container';
+
+        currentUsers.forEach((user, index) => {
+          const card = document.createElement('div');
+          card.className = 'user-item';
+
+          // Top row: phone number as title
+          const phoneLabel = document.createElement('div');
+          phoneLabel.className = 'user-phone-label';
+          phoneLabel.textContent = Homey.__('settings.users_phone_label') + ': ' + user.id;
+
+          // Bottom row: name input + delete button
+          const detailsRow = document.createElement('div');
+          detailsRow.className = 'user-item-details';
+
+          const nameInput = document.createElement('input');
+          nameInput.className = 'homey-form-input';
+          nameInput.type = 'text';
+          nameInput.dataset.index = index;
+          nameInput.value = user.name || user.id;
+          nameInput.placeholder = Homey.__('settings.users_name_placeholder');
+
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'homey-button-danger';
+          deleteBtn.type = 'button';
+          deleteBtn.dataset.index = index;
+          deleteBtn.dataset.action = 'delete';
+          deleteBtn.textContent = Homey.__('settings.users_delete');
+
+          detailsRow.appendChild(nameInput);
+          detailsRow.appendChild(deleteBtn);
+
+          card.appendChild(phoneLabel);
+          card.appendChild(detailsRow);
+          listWrapper.appendChild(card);
+        });
+
+        container.appendChild(listWrapper);
+      }
+
+      function loadUsers() {
+        Homey.get('allowed_users', function (err, value) {
+          if (err) return showToast(err.message || err, 'error');
+          currentUsers = value || [];
+          renderUsers();
+        });
+      }
+
+      // Event delegation: handles delete for all user cards
+      document.getElementById('users_container').addEventListener('click', function (e) {
+        if (e.target && e.target.dataset.action === 'delete') {
+          const idx = parseInt(e.target.dataset.index, 10);
+          const phone = currentUsers[idx] && currentUsers[idx].id;
+          if (!phone) return;
+
+          Homey.confirm(Homey.__('settings.users_delete_confirm'), 'warning', function (err, confirmed) {
+            if (err || !confirmed) return;
+
+            Homey.api('DELETE', '/user/' + encodeURIComponent(phone), null, function (apiErr, result) {
+              if (apiErr || !result || !result.success) {
+                showToast((result && result.error) || String(apiErr) || 'Error', 'error');
+                return;
+              }
+              showToast(Homey.__('settings.save_success'), 'success');
+              loadUsers(); // Reload from server after deletion
+            });
+          });
+        }
+      });
+
+      document.getElementById('users_container').addEventListener('change', function (e) {
+        if (e.target && e.target.tagName === 'INPUT' && e.target.dataset.index !== undefined) {
+          const idx = parseInt(e.target.dataset.index, 10);
+          currentUsers[idx].name = e.target.value;
+        }
+      });
+
+      document.getElementById('save_users').addEventListener('click', function () {
+        // Collect latest input values before saving
+        document.querySelectorAll('#users_container input').forEach(input => {
+          const idx = parseInt(input.getAttribute('data-index'), 10);
+          currentUsers[idx].name = input.value;
+        });
+
+        Homey.set('allowed_users', currentUsers, function (err) {
+          if (err) return showToast(err.message || err, 'error');
+          showToast(Homey.__('settings.save_success'), 'success');
+        });
       });
     }
   </script>

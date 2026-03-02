@@ -6,5 +6,9 @@
   "1.0.2": {
     "en": "Added automatic 'mark as read' (double blue ticks) for incoming messages.",
     "it": "Aggiunto il 'segna come letto' automatico (doppie spunte blu) per i messaggi in arrivo."
+  },
+  "1.0.3": {
+    "en": "(i) Added User management with the ability to register to the bot using the /register command; \n(ii) Added Address Book with autocomplete in the send message Flow Card.",
+    "it": "(i) Aggiunta la gestione degli Utenti con possibilità di registrarsi al bot usando il comando /register; \n(ii) Aggiunta la Rubrica con autocompletamento nella Flow Card di invio messaggio."
   }
 }

@@ -4,16 +4,26 @@
         "it": "Invia messaggio WhatsApp"
     },
     "titleFormatted": {
-        "en": "Send [[message_text]] to [[recipient_number]]",
-        "it": "Invia [[message_text]] a [[recipient_number]]"
+        "en": "Send [[message_text]] to contact [[recipient_contact]] or number [[recipient_number]]",
+        "it": "Invia [[message_text]] al contatto [[recipient_contact]] oppure al numero [[recipient_number]]"
     },
     "args": [
         {
+            "name": "recipient_contact",
+            "type": "autocomplete",
+            "required": false,
+            "title": {
+                "en": "Contact",
+                "it": "Contatto"
+            }
+        },
+        {
             "name": "recipient_number",
             "type": "text",
+            "required": false,
             "title": {
-                "en": "Recipient Number (e.g. 13331234567)",
-                "it": "Numero Destinatario (es. 393331234567)"
+                "en": "Number",
+                "it": "Numero"
             }
         },
         {
