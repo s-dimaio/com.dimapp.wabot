@@ -88,17 +88,43 @@ module.exports = {
                 const message = body.entry[0].changes[0].value.messages[0];
                 const from = message.from;
                 const msgId = message.id;
-                const msg_body = message.text?.body;
+                const msgType = message.type;
 
-                homey.log(`Received message from ${from} [id: ${msgId}]: ${msg_body}`);
+                // Extract body based on message type
+                let msg_body = null;
+                if (msgType === 'text') {
+                    msg_body = message.text?.body;
+                }
+
+                homey.log(`Received ${msgType} message from ${from} [id: ${msgId}]`);
 
                 // Mark message as read (double blue tick) immediately
                 homey.app.markMessageAsRead(msgId).catch(() => { });
 
                 // Access Control Check
                 if (homey.app.isUserAllowed(from)) {
-                    // Pass data to app instance
-                    await homey.app.triggerMessageReceived(msg_body, from);
+                    if (msgType === 'audio') {
+                        // Handle voice message: transcribe via Gemini API
+                        const mediaId = message.audio?.id;
+                        if (mediaId) {
+                            try {
+                                msg_body = await homey.app.transcribeVoiceMessage(mediaId, from);
+                                if (msg_body) homey.log(`Voice message transcribed: "${msg_body}"`);
+                            } catch (transcribeErr) {
+                                homey.error('Voice transcription error:', transcribeErr);
+                                await homey.app.sendWhatsappMessage(
+                                    from,
+                                    homey.__('bot.voice_transcription_error')
+                                ).catch(e => homey.error('Failed to send transcription error reply', e));
+                                return 'EVENT_RECEIVED';
+                            }
+                        }
+                    }
+
+                    // Trigger flow only if we have a message body
+                    if (msg_body) {
+                        await homey.app.triggerMessageReceived(msg_body, from);
+                    }
                 } else {
                     const verifyToken = homey.settings.get('verify_token');
                     if (msg_body && msg_body.trim() === `/register ${verifyToken}`) {

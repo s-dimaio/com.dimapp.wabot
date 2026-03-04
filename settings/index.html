@@ -297,6 +297,24 @@
             <div class="menu-item-arrow">›</div>
           </div>
 
+          <div id="nav_voice" class="menu-item" role="button" tabindex="0">
+            <div class="menu-item-content">
+              <div class="menu-item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="22"></line>
+                </svg>
+              </div>
+              <div class="menu-item-text">
+                <span class="menu-item-title" data-i18n="settings.nav_voice">Voice Messages</span>
+                <span class="menu-item-subtitle" data-i18n="settings.nav_voice_desc">Transcription settings</span>
+              </div>
+            </div>
+            <div class="menu-item-arrow">›</div>
+          </div>
+
           <div id="open_guide_menu" class="menu-item" role="button" tabindex="0">
             <div class="menu-item-content">
               <div class="menu-item-icon">
@@ -366,6 +384,7 @@
           <input class="homey-form-input" id="verify_token" type="text" value="" />
         </div>
 
+
         <div class="homey-form-group">
           <button id="save" class="homey-button-primary-full" data-i18n="settings.save" type="button">Save
             Settings</button>
@@ -406,6 +425,37 @@
     </form>
   </div>
 
+  <!-- View 1.6: Voice Messages -->
+  <div id="view-voice" class="view">
+    <form class="homey-form">
+      <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend" data-i18n="settings.voice_title">Voice Messages</legend>
+        <div class="homey-form-group">
+          <p class="homey-text-regular" data-i18n="settings.voice_description">Configure API credentials for voice
+            message transcription.</p>
+        </div>
+
+        <div class="homey-form-group">
+          <div class="homey-form-label-wrapper">
+            <label class="homey-form-label" for="groq_api_key" data-i18n="settings.groq_api_key">Groq API Key</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.groq_api_key_hint">&#9432;</span>
+          </div>
+          <input class="homey-form-input" id="groq_api_key" type="text" value="" />
+        </div>
+
+        <div class="homey-form-group">
+          <button id="save_voice" class="homey-button-primary-full" data-i18n="settings.save" type="button">Save
+            Settings</button>
+        </div>
+
+        <div class="homey-form-group" style="margin-top: 20px;">
+          <button id="back_from_voice" class="homey-button-transparent" style="padding-left: 0;"
+            data-i18n="settings.guide_back" type="button">← Back to Menu</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
   <!-- View 2: Setup Guide -->
   <div id="view-guide" class="view">
     <header class="homey-header">
@@ -413,6 +463,11 @@
     </header>
 
     <form class="homey-form">
+      <!-- SECTION 1: BOT CONFIGURATION -->
+      <header class="homey-header" style="margin-top: 10px; margin-bottom: -10px;">
+        <h2 class="homey-title" data-i18n="settings.guide_section_bot">Bot Configuration</h2>
+      </header>
+
       <fieldset class="homey-form-fieldset">
         <legend class="homey-form-legend" data-i18n="settings.guide_part1_title">Part 1: Create the Meta App</legend>
         <div class="homey-form-group">
@@ -442,8 +497,9 @@
         </div>
       </fieldset>
 
+
       <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend" data-i18n="settings.guide_part3_title">Part 3: Configure Homey &amp; Webhook
+        <legend class="homey-form-legend" data-i18n="settings.guide_part3_title">Part 4: Configure Homey &amp; Webhook
         </legend>
         <div class="homey-form-group">
           <ol class="homey-text-regular">
@@ -457,7 +513,7 @@
       </fieldset>
 
       <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend" data-i18n="settings.guide_part4_title">Part 4: First Bot Activation
+        <legend class="homey-form-legend" data-i18n="settings.guide_part4_title">Part 5: First Bot Activation
         </legend>
         <div class="homey-form-group">
           <ol class="homey-text-regular">
@@ -468,6 +524,23 @@
             <li data-i18n="settings.guide_part4_step5"></li>
             <li data-i18n="settings.guide_part4_step6"></li>
             <li data-i18n="settings.guide_part4_step7"></li>
+          </ol>
+        </div>
+      </fieldset>
+
+      <!-- SECTION 2: VOICE MESSAGES CONFIGURATION -->
+      <header class="homey-header" style="margin-top: 30px; margin-bottom: -10px;">
+        <h2 class="homey-title" data-i18n="settings.guide_section_voice">Voice Messages Configuration</h2>
+      </header>
+
+      <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend" data-i18n="settings.guide_part_voice_title">Groq API Key</legend>
+        <div class="homey-form-group">
+          <ol class="homey-text-regular">
+            <li data-i18n="settings.guide_part_voice_step1"></li>
+            <li data-i18n="settings.guide_part_voice_step2"></li>
+            <li data-i18n="settings.guide_part_voice_step3"></li>
+            <li data-i18n="settings.guide_part_voice_step4"></li>
           </ol>
         </div>
       </fieldset>
@@ -518,6 +591,7 @@
       const viewMenu = document.getElementById('view-menu');
       const viewSettings = document.getElementById('view-settings');
       const viewUsers = document.getElementById('view-users');
+      const viewVoice = document.getElementById('view-voice');
       const viewGuide = document.getElementById('view-guide');
 
       function switchView(targetView) {
@@ -526,6 +600,7 @@
       }
 
       document.getElementById('nav_config').addEventListener('click', () => switchView(viewSettings));
+      document.getElementById('nav_voice').addEventListener('click', () => switchView(viewVoice));
       document.getElementById('nav_users').addEventListener('click', () => {
         loadUsers();
         switchView(viewUsers);
@@ -533,6 +608,7 @@
       document.getElementById('open_guide_menu').addEventListener('click', () => switchView(viewGuide));
 
       document.getElementById('back_from_config').addEventListener('click', () => switchView(viewMenu));
+      document.getElementById('back_from_voice').addEventListener('click', () => switchView(viewMenu));
       document.getElementById('back_from_users').addEventListener('click', () => switchView(viewMenu));
       document.getElementById('back_from_guide').addEventListener('click', () => switchView(viewMenu));
 
@@ -544,6 +620,9 @@
         } else if (e.target && e.target.classList.contains('open-meta-biz')) {
           e.preventDefault();
           Homey.popup('https://business.facebook.com/settings');
+        } else if (e.target && e.target.classList.contains('open-groq-console')) {
+          e.preventDefault();
+          Homey.popup('https://console.groq.com');
         }
       });
 
@@ -551,6 +630,7 @@
       var access_token_el = document.getElementById('access_token');
       var phone_id_el = document.getElementById('phone_id');
       var verify_token_el = document.getElementById('verify_token');
+      var groq_api_key_el = document.getElementById('groq_api_key');
       var webhook_url_el = document.getElementById('webhook_url');
       var copy_btn_el = document.getElementById('copy_webhook_url');
 
@@ -567,6 +647,11 @@
       Homey.get('verify_token', function (err, value) {
         if (err) return showToast(err.message || err, 'error');
         if (value) verify_token_el.value = value;
+      });
+
+      Homey.get('groq_api_key', function (err, value) {
+        if (err) return showToast(err.message || err, 'error');
+        if (value) groq_api_key_el.value = value;
       });
 
       // Fetch the Webhook URL from the app's API
@@ -603,6 +688,16 @@
           if (err) return showToast(err.message || err, 'error');
         });
         Homey.set('verify_token', verify_token_el.value, function (err) {
+          if (err) return showToast(err.message || err, 'error');
+        });
+
+        // Show toast instead of alert on success
+        showToast(Homey.__('settings.save_success') || 'Settings saved successfully', 'success');
+      });
+
+      // Save voice settings
+      document.getElementById('save_voice').addEventListener('click', function () {
+        Homey.set('groq_api_key', groq_api_key_el.value, function (err) {
           if (err) return showToast(err.message || err, 'error');
         });
 

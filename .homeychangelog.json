@@ -10,5 +10,9 @@
   "1.0.3": {
     "en": "(i) Added User management with the ability to register to the bot using the /register command; \n(ii) Added Address Book with autocomplete in the send message Flow Card.",
     "it": "(i) Aggiunta la gestione degli Utenti con possibilità di registrarsi al bot usando il comando /register; \n(ii) Aggiunta la Rubrica con autocompletamento nella Flow Card di invio messaggio."
+  },
+  "1.1.0": {
+    "en": "Added full support for Voice Messages: you can now send audio messages and the bot will transcribe them using Groq's Whisper API. Added dedicated Voice Configuration section in App settings for the configuration.",
+    "it": "Aggiunto supporto completo ai Messaggi Vocali: ora puoi inviare messaggi audio e il bot li trascriverà usando le API Whisper di Groq. Aggiunta una sezione dedicata nelle Impostazioni per la configurazione."
   }
 }

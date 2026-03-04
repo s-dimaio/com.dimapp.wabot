@@ -2,6 +2,7 @@
 
 const Homey = require('homey');
 const fetch = require('cross-fetch');
+const VoiceTranscriber = require('./lib/VoiceTranscriber');
 
 module.exports = class WhatsAppBotApp extends Homey.App {
 
@@ -206,6 +207,32 @@ module.exports = class WhatsAppBotApp extends Homey.App {
       this.homey.settings.set('allowed_users', users);
       this.log(`User ${phone} added to allowed users.`);
     }
+  }
+
+  /**
+   * Transcribes a WhatsApp voice message to text using the Google Gemini API.
+   * Reads credentials from Homey settings and delegates to {@link VoiceTranscriber}.
+   *
+   * @public
+   * @param {string} mediaId - The WhatsApp media asset ID from the webhook payload (`message.audio.id`).
+   * @param {string} from - The sender's phone number, used to send an error reply if transcription fails.
+   * @returns {Promise<string|null>} The transcribed text, or null if transcription failed (error already sent).
+   * @example
+   * // Called from api.js when a voice message is received:
+   * const text = await homey.app.transcribeVoiceMessage('wamid-media-id', '39333xxxxxxx');
+   */
+  async transcribeVoiceMessage(mediaId, from) {
+    const accessToken = this.homey.settings.get('access_token');
+    const groqApiKey = this.homey.settings.get('groq_api_key');
+
+    if (!accessToken || !groqApiKey) {
+      this.error('Cannot transcribe voice message: access_token or groq_api_key not configured.');
+      await this.sendWhatsappMessage(from, this.homey.__('bot.voice_transcription_error')).catch(() => { });
+      return null;
+    }
+
+    const transcriber = new VoiceTranscriber();
+    return transcriber.transcribeAudio(mediaId, accessToken, groqApiKey);
   }
 
 };

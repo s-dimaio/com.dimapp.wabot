@@ -1,6 +1,6 @@
 {
   "id": "com.dimapp.wabot",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "platforms": [
@@ -57,5 +57,6 @@
         "username": "sdimaio77"
       }
     }
-  }
+  },
+  "homeyCommunityTopicId": 151974
 }

@@ -1,13 +1,15 @@
 {
     "settings": {
         "title": "Configuration",
-        "description": "Configure here your credentials for WhatsApp Meta API.",
+        "description": "Configure here your credentials for WhatsApp Meta API. For any questions, you can refer to the 'Setup Guide'.",
         "access_token": "Permanent Access Token",
         "access_token_hint": "Generate this token in Meta Business Settings > System Users. It never expires.",
         "phone_id": "Phone Number ID",
         "phone_id_hint": "Found in Meta App > Use Cases > Customize > API Setup",
         "verify_token": "Verify Token",
         "verify_token_hint": "A secret string without spaces used to verify the webhook on Meta and for bot registration (e.g. my_homey_token)",
+        "groq_api_key": "Groq API Key",
+        "groq_api_key_hint": "GroqCloud API key (console.groq.com). Required for transcribing voice messages via Whisper.",
         "webhook_url_label": "Webhook URL (for Meta)",
         "webhook_url_hint": "Copy this URL and paste it in the Meta Developer Portal as the Callback URL.",
         "webhook_url_copy": "Copy",
@@ -19,6 +21,8 @@
         "menu_title": "WhatsApp Bot",
         "nav_config": "Configuration",
         "nav_config_desc": "API credentials and webhook",
+        "nav_voice": "Voice Messages",
+        "nav_voice_desc": "Transcription settings",
         "nav_users": "User Management",
         "nav_users_desc": "Manage authorized numbers",
         "users_title": "User Management",
@@ -28,12 +32,16 @@
         "users_delete": "Remove",
         "users_delete_confirm": "Remove this number from the authorized list?",
         "users_phone_label": "Mobile",
+        "voice_title": "Voice Messages",
+        "voice_description": "Configure API credentials for voice message transcription. For any questions, you can refer to the 'Setup Guide'.",
         "action_error_both_recipients": "Please fill ONLY one recipient field (either Contact or Number).",
         "action_error_no_recipient": "Please fill AT LEAST one recipient field (Contact or Number).",
         "guide_open": "Setup Guide →",
         "guide_back": "← Back to Settings",
         "guide_title": "Setup Guide",
         "guide_desc": "Instructions to configure the bot",
+        "guide_section_bot": "WhatsApp Bot Configuration",
+        "guide_section_voice": "Voice Messages Configuration",
         "guide_part1_title": "Part 1: Create the Meta App",
         "guide_part1_step1": "Go to <a href='#' class='open-meta-dev'>developers.facebook.com</a> and log in with your Facebook account.",
         "guide_part1_step2": "Click 'My Apps' in the top-right corner, then 'Create App'.",
@@ -61,11 +69,17 @@
         "guide_part4_step4": "Click 'Send Message' (Step 2).",
         "guide_part4_step5": "You will receive a 'Hello World' message on WhatsApp. The bot is now active, but you must register before using it.",
         "guide_part4_step6": "Reply to the welcome message by sending /register [secret_code] to the bot, where secret_code is the Verify Token you chose in Part 3.",
-        "guide_part4_step7": "The bot will reply with a confirmation message and will finally be ready to use!"
+        "guide_part4_step7": "The bot will reply with a confirmation message and will finally be ready to use!",
+        "guide_part_voice_title": "Part 1: Groq API Key",
+        "guide_part_voice_step1": "Go to <a href='#' class='open-groq-console'>console.groq.com</a> and log in or create a free account.",
+        "guide_part_voice_step2": "In the top-right corner, select 'API Keys'.",
+        "guide_part_voice_step3": "Click 'Create API Key', give it a name (e.g. HomeyBot), and copy it (it will be shown only once).",
+        "guide_part_voice_step4": "Go back to the Homey app settings, open the 'Voice Messages' section, paste the key, and save."
     },
     "bot": {
         "registration_required": "You are not authorized to use this Bot. To register you need to know the *secret code* (if you don't know it contact the Bot administrator). Once you have the secret code reply to this chat with the command:\n\n*/register [secret_code]*",
         "registration_success": "Registration successful!\n*Now you can use the Bot to control your smart home!*",
-        "invalid_token": "Invalid security code. If you don't know the security code *contact the Bot administrator* and try again."
+        "invalid_token": "Invalid security code. If you don't know the security code *contact the Bot administrator* and try again.",
+        "voice_transcription_error": "❌ I could not understand your voice message. Please try again or send me a text message instead."
     }
 }
