@@ -96,7 +96,7 @@ module.exports = {
                     msg_body = message.text?.body;
                 }
 
-                homey.log(`Received ${msgType} message from ${from} [id: ${msgId}]`);
+                homey.log(`Received ${msgType} message from ${homey.app._maskPhoneNumber(from)} [id: ${msgId}]`);
 
                 // Mark message as read (double blue tick) immediately
                 homey.app.markMessageAsRead(msgId).catch(() => { });
@@ -131,17 +131,17 @@ module.exports = {
                         // Register the user
                         await homey.app.saveAllowedUser(from);
                         await homey.app.sendWhatsappMessage(from, homey.__('bot.registration_success'));
-                        homey.log(`New user registered via webhook: ${from}`);
+                        homey.log(`New user registered via webhook: ${homey.app._maskPhoneNumber(from)}`);
                     } else if (msg_body && msg_body.trim().startsWith('/register')) {
                         // Wrong token attempt
-                        homey.log(`Unauthorized message attempt from ${from}. Wrong verify token in /register.`);
+                        homey.log(`Unauthorized message attempt from ${homey.app._maskPhoneNumber(from)}. Wrong verify token in /register.`);
                         await homey.app.sendWhatsappMessage(
                             from,
                             homey.__('bot.invalid_token')
                         ).catch(e => homey.error('Failed to send wrong token reply', e));
                     } else {
                         // Reject and send instructions
-                        homey.log(`Unauthorized message attempt from ${from}. Replied with /register instructions.`);
+                        homey.log(`Unauthorized message attempt from ${homey.app._maskPhoneNumber(from)}. Replied with /register instructions.`);
                         await homey.app.sendWhatsappMessage(
                             from,
                             homey.__('bot.registration_required')
@@ -186,7 +186,7 @@ module.exports = {
         }
 
         homey.settings.set('allowed_users', filtered);
-        homey.log(`User ${phone} removed from allowed users via Settings page.`);
+        homey.log(`User ${homey.app._maskPhoneNumber(phone)} removed from allowed users via Settings page.`);
         return { success: true };
     },
 

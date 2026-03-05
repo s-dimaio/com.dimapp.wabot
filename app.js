@@ -7,6 +7,22 @@ const VoiceTranscriber = require('./lib/VoiceTranscriber');
 module.exports = class WhatsAppBotApp extends Homey.App {
 
   /**
+   * Masks a phone number for privacy in logs (e.g. 39345***89).
+   * 
+   * @param {string} phone - The phone number to mask.
+   * @returns {string} The masked phone number.
+   * @example
+   * // returns '3934***34'
+   * this._maskPhoneNumber('3934567834');
+   * @private
+   */
+  _maskPhoneNumber(phone) {
+    if (!phone || typeof phone !== 'string') return String(phone);
+    if (phone.length <= 5) return '***';
+    return phone.substring(0, 4) + '...' + phone.substring(phone.length - 2);
+  }
+
+  /**
    * Initializes the WhatsApp Bot application.
    * Sets up Flow cards.
    */
@@ -105,7 +121,7 @@ module.exports = class WhatsAppBotApp extends Homey.App {
    */
   async triggerMessageReceived(messageText, senderNumber) {
     try {
-      this.log(`Triggering flow for message from ${senderNumber}`);
+      this.log(`Triggering flow for message from ${this._maskPhoneNumber(senderNumber)}`);
       await this._messageReceivedTrigger.trigger({
         message_text: messageText,
         sender_number: senderNumber
@@ -144,7 +160,7 @@ module.exports = class WhatsAppBotApp extends Homey.App {
 
     const url = `https://graph.facebook.com/v19.0/${phoneId}/messages`;
 
-    this.log(`Sending message to ${recipient}...`);
+    this.log(`Sending message to ${this._maskPhoneNumber(recipient)}...`);
 
     try {
       const response = await fetch(url, {
@@ -205,7 +221,7 @@ module.exports = class WhatsAppBotApp extends Homey.App {
         name: name || phone
       });
       this.homey.settings.set('allowed_users', users);
-      this.log(`User ${phone} added to allowed users.`);
+      this.log(`User ${this._maskPhoneNumber(phone)} added to allowed users.`);
     }
   }
 
