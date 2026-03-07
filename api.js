@@ -62,6 +62,9 @@ module.exports = {
     /**
      * Handles incoming POST webhook messages from WhatsApp (Meta Cloud API).
      * Parses the JSON body and triggers the Flow card if a text message is found.
+     * The "read" receipt (double blue tick) is sent only after the Homey trigger fires
+     * successfully, so that blue ticks represent meaningful delivery confirmation.
+     * For unauthorized users, the read receipt is sent immediately so the bot appears online.
      * @param {object} args - Arguments passed by Homey API.
      * @param {object} args.homey - Homey instance.
      * @param {object} args.body - Webhook JSON Payload.
@@ -77,14 +80,20 @@ module.exports = {
                 return 'Ignored'; // 200 OK so meta retries stop
             }
 
-            // Check if entry exists and has changes
-            if (
+            // Check if entry exists and has a processable message
+            const hasMessage =
                 body.entry &&
-                body.entry[0].changes &&
+                body.entry[0]?.changes &&
                 body.entry[0].changes[0] &&
-                body.entry[0].changes[0].value.messages &&
-                body.entry[0].changes[0].value.messages[0]
-            ) {
+                body.entry[0].changes[0].value?.messages &&
+                body.entry[0].changes[0].value.messages[0];
+
+            if (!hasMessage) {
+                homey.log('Webhook payload has no processable message (status update or malformed entry). Skipping.');
+                return 'EVENT_RECEIVED';
+            }
+
+            {
                 const message = body.entry[0].changes[0].value.messages[0];
                 const from = message.from;
                 const msgId = message.id;
@@ -97,9 +106,6 @@ module.exports = {
                 }
 
                 homey.log(`Received ${msgType} message from ${homey.app._maskPhoneNumber(from)} [id: ${msgId}]`);
-
-                // Mark message as read (double blue tick) immediately
-                homey.app.markMessageAsRead(msgId).catch(() => { });
 
                 // Access Control Check
                 if (homey.app.isUserAllowed(from)) {
@@ -123,9 +129,28 @@ module.exports = {
 
                     // Trigger flow only if we have a message body
                     if (msg_body) {
-                        await homey.app.triggerMessageReceived(msg_body, from);
+                        try {
+                            await homey.app.triggerMessageReceived(msg_body, from);
+                            // Mark as read only on successful trigger (blue ticks = Homey processed the message)
+                            homey.app.markMessageAsRead(msgId).catch(() => { });
+                        } catch (triggerErr) {
+                            homey.error('Error triggering message received flow:', triggerErr);
+                            await homey.app.sendWhatsappMessage(
+                                from,
+                                homey.__('bot.trigger_error')
+                            ).catch(e => homey.error('Failed to send trigger error reply', e));
+                        }
+                    } else {
+                        homey.log(`Received ${msgType} message from ${homey.app._maskPhoneNumber(from)} [id: ${msgId}] but no text body could be extracted. Trigger skipped.`);
+                        await homey.app.sendWhatsappMessage(
+                            from,
+                            homey.__('bot.unsupported_message_type')
+                        ).catch(e => homey.error('Failed to send unsupported type reply', e));
                     }
                 } else {
+                    // Mark as read immediately for unauthorized users so the bot appears online
+                    homey.app.markMessageAsRead(msgId).catch(() => { });
+
                     const verifyToken = homey.settings.get('verify_token');
                     if (msg_body && msg_body.trim() === `/register ${verifyToken}`) {
                         // Register the user

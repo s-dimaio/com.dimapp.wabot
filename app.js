@@ -115,20 +115,18 @@ module.exports = class WhatsAppBotApp extends Homey.App {
 
   /**
    * Triggers the "whatsapp_message_received" flow card.
+   * Throws if the trigger fails, so the caller can handle the error and notify the user.
    * @param {string} messageText - The text content of the received message.
    * @param {string} senderNumber - The phone number of the sender.
+   * @throws {Error} If the trigger card fails to fire.
    * @public
    */
   async triggerMessageReceived(messageText, senderNumber) {
-    try {
-      this.log(`Triggering flow for message from ${this._maskPhoneNumber(senderNumber)}`);
-      await this._messageReceivedTrigger.trigger({
-        message_text: messageText,
-        sender_number: senderNumber
-      });
-    } catch (err) {
-      this.error('Error triggering message received flow:', err);
-    }
+    this.log(`Triggering flow for message from ${this._maskPhoneNumber(senderNumber)}`);
+    await this._messageReceivedTrigger.trigger({
+      message_text: messageText,
+      sender_number: senderNumber
+    });
   }
 
   /**

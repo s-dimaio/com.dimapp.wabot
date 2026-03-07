@@ -80,6 +80,8 @@
         "registration_required": "Non sei autorizzato ad usare questo Bot. Per registrarti hai bisogno di conoscere il *codice segreto* (se non lo conosci contatta l'amministratore del Bot). Una volta che avrai il codice segreto rispondi a questa chat con il comando:\n\n*/register [codice_segreto]*",
         "registration_success": "Registrazione autorizzata con successo!\n*Ora puoi usare il Bot per comandare la tua smart home!*",
         "invalid_token": "Codice di sicurezza errato. Se non conosci il codice di sicurezza *contatta l'amministratore del Bot* e riprova.",
-        "voice_transcription_error": "❌ Non sono riuscito a capire il tuo messaggio vocale. Per favore riprova o inviami un messaggio di testo."
+        "voice_transcription_error": "❌ Non sono riuscito a capire il tuo messaggio vocale. Per favore riprova o inviami un messaggio di testo.",
+        "unsupported_message_type": "❌ Questo tipo di messaggio non è supportato. Per favore inviami un messaggio di testo o vocale.",
+        "trigger_error": "❌ Si è verificato un errore durante l'elaborazione del tuo messaggio. Per favore riprova."
     }
 }
