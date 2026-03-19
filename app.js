@@ -29,8 +29,13 @@ module.exports = class WhatsAppBotApp extends Homey.App {
   async onInit() {
     this.log('WhatsApp Bot App has been initialized');
 
-    // Register Flow Trigger Card
+    // Register Flow Trigger Cards
     this._messageReceivedTrigger = this.homey.flow.getTriggerCard('whatsapp_message_received');
+    this._messageFailedTrigger = this.homey.flow.getTriggerCard('whatsapp_message_failed');
+
+    // Mappa per salvare temporaneamente il testo dei messaggi inviati
+    // Serve per fare fallback se il webhook restituisce errore asincrono (wamid -> text)
+    this._recentMessages = new Map();
 
     // Register Flow Action Card
     const sendMessageAction = this.homey.flow.getActionCard('send_whatsapp_message');
@@ -62,10 +67,10 @@ module.exports = class WhatsAppBotApp extends Homey.App {
       const hasNumber = typeof byNumber === 'string' && byNumber.trim() !== '';
 
       if (hasContact && hasNumber) {
-        throw new Error(this.homey.__('settings.action_error_both_recipients'));
+        throw new Error(this.homey.__('flow.action_error_both_recipients'));
       }
       if (!hasContact && !hasNumber) {
-        throw new Error(this.homey.__('settings.action_error_no_recipient'));
+        throw new Error(this.homey.__('flow.action_error_no_recipient'));
       }
 
       const recipient = hasContact ? byContact.id : byNumber.trim();
@@ -130,6 +135,34 @@ module.exports = class WhatsAppBotApp extends Homey.App {
   }
 
   /**
+   * Triggers the "whatsapp_message_failed" flow card.
+   * Throws if the trigger fails, so the caller can handle it.
+   * @param {string} errorMessage - The localized error message.
+   * @param {string} recipientNumber - The phone number of the recipient.
+   * @param {string} [messageText] - The original message text.
+   * @public
+   */
+  async triggerMessageFailed(errorMessage, recipientNumber, messageText = '') {
+    this.log(`Triggering flow for failed message to ${this._maskPhoneNumber(recipientNumber)}...`);
+    await this._messageFailedTrigger.trigger({
+      error_message: errorMessage,
+      recipient_number: recipientNumber,
+      message_text: messageText || ''
+    }).catch(err => this.error('Failed to trigger whatsapp_message_failed card:', err));
+  }
+
+  /**
+   * Retrieves the original text of a recently sent message by its wamid.
+   * Used for async webhook fallbacks.
+   * @param {string} wamid - The message ID.
+   * @returns {string|null} The original text, if still in memory.
+   * @public
+   */
+  getRecentMessageText(wamid) {
+    return this._recentMessages.get(wamid) || null;
+  }
+
+  /**
    * Sends a WhatsApp text message using the Meta Cloud API.
    * reads credentials from Homey settings.
    * @param {string} recipient - The phone number to send the message to (e.g. "393331234567").
@@ -173,16 +206,112 @@ module.exports = class WhatsAppBotApp extends Homey.App {
       const data = await response.json();
 
       if (!response.ok) {
-        this.error('Failed to send WhatsApp message:', JSON.stringify(data));
-        throw new Error(data.error?.message || 'Unknown API error');
+        // Fallback per errore "Re-engagement window expired"
+        if (data.error && data.error.code === 131047) {
+          this.log(`Error 131047: 24h window expired for ${this._maskPhoneNumber(recipient)}. Falling back to template message.`);
+          return await this.sendWhatsappTemplateMessage(recipient, text);
+        }
+
+        const apiErrorMessage = data.error?.message || 'Unknown API error';
+        this.error('Failed to send WhatsApp message. Full API Response:', JSON.stringify(data, null, 2));
+
+        // Rilancia l'errore di WhatsApp in modo che l'Action Card su Homey fallisca e lo mostri
+        throw new Error(`WhatsApp API Error (${data.error?.code || 'Unknown'}): ${apiErrorMessage}`);
       }
 
       this.log('Message sent successfully:', data.messages[0].id);
+      
+      // Salva in memoria per 2 minuti per eventuale fallback asincrono del webhook
+      const msgId = data.messages[0].id;
+      this._recentMessages.set(msgId, text);
+      setTimeout(() => {
+        this._recentMessages.delete(msgId);
+      }, 120000);
+
       return data;
     } catch (error) {
+      // Se l'errore è un throw esplicito del fallback (es: template non configurato),
+      // o un errore già parserizzato (come quelli di sendWhatsappTemplateMessage), 
+      // lo rilanciamo direttamente così Homey Flow mostra il messaggio corretto.
+      if (error.message && (error.message.includes('template') || error.message.includes('24h'))) {
+        throw error;
+      }
       this.error('Network or API Error sending WhatsApp message:', error);
-      throw error;
+      
+      // Inoltra il vero messaggio d'errore o un fallback testuale
+      // così da rendere esplicito l'errore nella Flow Action Card
+      throw new Error(error.message || this.homey.__('bot.trigger_error'));
     }
+  }
+
+  /**
+   * Sends a WhatsApp template message using the Meta Cloud API.
+   * This is used as a fallback when the 24h window has expired.
+   * @param {string} recipient - The phone number to send the message to.
+   * @param {string} text - The content of the message to inject in the template variable.
+   * @public
+   */
+  async sendWhatsappTemplateMessage(recipient, text) {
+    const accessToken = this.homey.settings.get('access_token');
+    const phoneId = this.homey.settings.get('phone_id');
+    const templateName = this.homey.settings.get('template_name');
+    const templateLanguage = this.homey.settings.get('template_language');
+    const templateParameterName = this.homey.settings.get('template_parameter_name');
+
+    if (!templateName || !templateLanguage) {
+      throw new Error(this.homey.__('bot.template_fallback_error'));
+    }
+
+    const payload = {
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: recipient,
+      type: 'template',
+      template: {
+        name: templateName,
+        language: {
+          code: templateLanguage
+        },
+        components: [
+          {
+            type: 'body',
+            parameters: [
+              {
+                type: 'text',
+                // Optional. Required for templates with named variables (e.g., {{message}}) created with type "Name".
+                // If provided in settings, we use it; otherwise we omit it (for numeric variables like {{1}}).
+                ...(templateParameterName ? { parameter_name: templateParameterName } : {}),
+                text: text
+              }
+            ]
+          }
+        ]
+      }
+    };
+
+    const url = `https://graph.facebook.com/v19.0/${phoneId}/messages`;
+
+    this.log(`Sending template message '${templateName}' to ${this._maskPhoneNumber(recipient)}...`);
+    this.log('Template payload:', JSON.stringify(payload, null, 2));
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      this.error('Failed to send WhatsApp template message. Full API Response:', JSON.stringify(data, null, 2));
+      throw new Error(data.error?.message || 'Unknown API error');
+    }
+
+    this.log('Template message sent successfully:', data.messages[0].id);
+    return data;
   }
 
   /**

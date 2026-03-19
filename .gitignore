@@ -2,8 +2,9 @@
 /node_modules/
 /.homeybuild/
 /images/
+/.agent/
 /.env
-info.txt
+info*.txt
 *.ps1
 .homeyignore
 jsconfig.json

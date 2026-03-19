@@ -1,0 +1,32 @@
+{
+    "title": {
+        "en": "WhatsApp message delivery failed",
+        "it": "Consegna messaggio WhatsApp fallita"
+    },
+    "tokens": [
+        {
+            "name": "error_message",
+            "type": "string",
+            "title": {
+                "en": "Error Message",
+                "it": "Messaggio di Errore"
+            }
+        },
+        {
+            "name": "recipient_number",
+            "type": "string",
+            "title": {
+                "en": "Recipient Number",
+                "it": "Numero Destinatario"
+            }
+        },
+        {
+            "name": "message_text",
+            "type": "string",
+            "title": {
+                "en": "Message Text",
+                "it": "Testo Messaggio"
+            }
+        }
+    ]
+}

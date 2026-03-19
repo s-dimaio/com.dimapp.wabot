@@ -88,8 +88,57 @@ module.exports = {
                 body.entry[0].changes[0].value?.messages &&
                 body.entry[0].changes[0].value.messages[0];
 
+            // Invece di ignorare completamente gli status, li logghiamo per diagnostica
+            const hasStatus = 
+                body.entry &&
+                body.entry[0]?.changes &&
+                body.entry[0].changes[0] &&
+                body.entry[0].changes[0].value?.statuses &&
+                body.entry[0].changes[0].value.statuses[0];
+
+            if (hasStatus) {
+                const statusObj = body.entry[0].changes[0].value.statuses[0];
+                const status = statusObj.status;
+                const recipient = statusObj.recipient_id;
+                homey.log(`[Webhook Status Update] Message to ${homey.app._maskPhoneNumber(recipient)} is now: ${status}`);
+                
+                // Se lo stato è failed, stampiamo l'errore completo e gestiamolo
+                if (status === 'failed' && statusObj.errors) {
+                    homey.error(`[Webhook Status Update] Message Delivery FAILED. Error details:`, JSON.stringify(statusObj.errors));
+                    
+                    const errorCode = statusObj.errors[0]?.code;
+                    let errorMessage = statusObj.errors[0]?.message || 'Unknown error';
+                    const wamid = statusObj.id;
+                    const originalText = homey.app.getRecentMessageText(wamid);
+
+                    if (errorCode === 131047) {
+                        const templateName = homey.settings.get('template_name');
+                        const templateLanguage = homey.settings.get('template_language');
+
+                        if (originalText && templateName && templateLanguage) {
+                            homey.log(`[Webhook] Async Fallback: Window expired for ${wamid}. Sending template...`);
+                            homey.app.sendWhatsappTemplateMessage(recipient, originalText).catch(e => {
+                                homey.app.triggerMessageFailed(e.message, recipient, originalText);
+                            });
+                            return 'EVENT_RECEIVED';
+                        }
+                        
+                        // Fallback impossibile (per configurazione mancante o testo messaggio introvabile)
+                        errorMessage = homey.__('bot.template_fallback_missing');
+                    } else {
+                        // Formatta altri tipi di errore per renderli chiari nel trigger
+                        errorMessage = `WhatsApp API Error (${errorCode || 'Unknown'}): ${errorMessage}`;
+                    }
+
+                    // Fai scattare la scheda evento in Homey in modo asincrono
+                    homey.app.triggerMessageFailed(errorMessage, recipient, originalText).catch(() => {});
+                }
+                
+                return 'EVENT_RECEIVED';
+            }
+
             if (!hasMessage) {
-                homey.log('Webhook payload has no processable message (status update or malformed entry). Skipping.');
+                homey.log('Webhook payload has no processable message or status update. Skipping.');
                 return 'EVENT_RECEIVED';
             }
 

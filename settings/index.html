@@ -247,6 +247,13 @@
       font-size: 20px;
       font-weight: bold;
     }
+
+    /* Views descriptive text formatting */
+    .view p.homey-text-regular,
+    .view ol.homey-text-regular {
+      text-align: justify;
+      white-space: pre-line;
+    }
   </style>
   <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
 </head>
@@ -271,8 +278,28 @@
                 </svg>
               </div>
               <div class="menu-item-text">
-                <span class="menu-item-title" data-i18n="settings.nav_config">Configuration</span>
-                <span class="menu-item-subtitle" data-i18n="settings.nav_config_desc">API credentials and webhook</span>
+                <span class="menu-item-title" data-i18n="settings.menu.config.title">Configuration</span>
+                <span class="menu-item-subtitle" data-i18n="settings.menu.config.description">API credentials and
+                  webhook</span>
+              </div>
+            </div>
+            <div class="menu-item-arrow">›</div>
+          </div>
+
+          <div id="nav_template" class="menu-item" role="button" tabindex="0">
+            <div class="menu-item-content">
+              <div class="menu-item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  <circle cx="9" cy="11" r="1"></circle>
+                  <circle cx="15" cy="11" r="1"></circle>
+                </svg>
+              </div>
+              <div class="menu-item-text">
+                <span class="menu-item-title" data-i18n="settings.menu.template.title">Template Messages</span>
+                <span class="menu-item-subtitle" data-i18n="settings.menu.template.description">Fallback and 24h
+                  notifications</span>
               </div>
             </div>
             <div class="menu-item-arrow">›</div>
@@ -290,8 +317,9 @@
                 </svg>
               </div>
               <div class="menu-item-text">
-                <span class="menu-item-title" data-i18n="settings.nav_users">User Management</span>
-                <span class="menu-item-subtitle" data-i18n="settings.nav_users_desc">Manage authorized numbers</span>
+                <span class="menu-item-title" data-i18n="settings.menu.users.title">User Management</span>
+                <span class="menu-item-subtitle" data-i18n="settings.menu.users.description">Manage authorized
+                  numbers</span>
               </div>
             </div>
             <div class="menu-item-arrow">›</div>
@@ -308,8 +336,9 @@
                 </svg>
               </div>
               <div class="menu-item-text">
-                <span class="menu-item-title" data-i18n="settings.nav_voice">Voice Messages</span>
-                <span class="menu-item-subtitle" data-i18n="settings.nav_voice_desc">Transcription settings</span>
+                <span class="menu-item-title" data-i18n="settings.menu.voice.title">Voice Messages</span>
+                <span class="menu-item-subtitle" data-i18n="settings.menu.voice.description">Transcription
+                  settings</span>
               </div>
             </div>
             <div class="menu-item-arrow">›</div>
@@ -325,8 +354,9 @@
                 </svg>
               </div>
               <div class="menu-item-text">
-                <span class="menu-item-title" data-i18n="settings.guide_title">Setup Guide</span>
-                <span class="menu-item-subtitle" data-i18n="settings.guide_desc">Instructions to configure the
+                <span class="menu-item-title" data-i18n="settings.menu.guide.title">Setup Guide</span>
+                <span class="menu-item-subtitle" data-i18n="settings.menu.guide.description">Instructions to configure
+                  the
                   bot</span>
               </div>
             </div>
@@ -339,72 +369,148 @@
 
   <!-- View 1: Settings -->
   <div id="view-settings" class="view">
+    <header class="homey-header">
+      <h1 class="homey-title" data-i18n="settings.config.title">WhatsApp Bot Settings</h1>
+    </header>
+
     <form class="homey-form">
       <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend" data-i18n="settings.title">WhatsApp Bot Settings</legend>
 
         <div class="homey-form-group">
-          <p class="homey-text-regular" data-i18n="settings.description">Configure your Meta WhatsApp Business API
+          <p class="homey-text-regular" data-i18n="settings.config.description">Configure your Meta WhatsApp Business
+            API
             credentials here.</p>
         </div>
 
         <div class="homey-form-group">
           <div class="homey-form-label-wrapper">
-            <label class="homey-form-label" for="access_token" data-i18n="settings.access_token">Access Token</label>
-            <span class="tooltip-icon" data-i18n-tooltip="settings.access_token_hint">&#9432;</span>
+            <label class="homey-form-label" for="access_token" data-i18n="settings.config.access_token">Access
+              Token</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.config.access_token_hint">&#9432;</span>
           </div>
           <input class="homey-form-input" id="access_token" type="text" value="" />
         </div>
 
         <div class="homey-form-group">
           <div class="homey-form-label-wrapper">
-            <label class="homey-form-label" for="phone_id" data-i18n="settings.phone_id">Phone Number ID</label>
-            <span class="tooltip-icon" data-i18n-tooltip="settings.phone_id_hint">&#9432;</span>
+            <label class="homey-form-label" for="phone_id" data-i18n="settings.config.phone_id">Phone Number ID</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.config.phone_id_hint">&#9432;</span>
           </div>
           <input class="homey-form-input" id="phone_id" type="text" value="" />
         </div>
 
         <div class="homey-form-group">
           <div class="homey-form-label-wrapper">
-            <label class="homey-form-label" for="webhook_url" data-i18n="settings.webhook_url_label">Webhook URL</label>
-            <span class="tooltip-icon" data-i18n-tooltip="settings.webhook_url_hint">&#9432;</span>
+            <label class="homey-form-label" for="webhook_url" data-i18n="settings.config.webhook_url_label">Webhook
+              URL</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.config.webhook_url_hint">&#9432;</span>
           </div>
           <div class="webhook-url-row">
             <input class="homey-form-input" id="webhook_url" type="text" readonly />
-            <button id="copy_webhook_url" class="homey-button-secondary" data-i18n="settings.webhook_url_copy"
+            <button id="copy_webhook_url" class="homey-button-secondary" data-i18n="settings.config.webhook_url_copy"
               type="button">Copy</button>
           </div>
         </div>
 
         <div class="homey-form-group">
           <div class="homey-form-label-wrapper">
-            <label class="homey-form-label" for="verify_token" data-i18n="settings.verify_token">Verify Token</label>
-            <span class="tooltip-icon" data-i18n-tooltip="settings.verify_token_hint">&#9432;</span>
+            <label class="homey-form-label" for="verify_token" data-i18n="settings.config.verify_token">Verify
+              Token</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.config.verify_token_hint">&#9432;</span>
           </div>
           <input class="homey-form-input" id="verify_token" type="text" value="" />
         </div>
 
-
         <div class="homey-form-group">
-          <button id="save" class="homey-button-primary-full" data-i18n="settings.save" type="button">Save
+          <button id="save" class="homey-button-primary-full" data-i18n="settings.common.save" type="button">Save
             Settings</button>
         </div>
 
         <div class="homey-form-group" style="margin-top: 20px;">
           <button id="back_from_config" class="homey-button-transparent" style="padding-left: 0;"
-            data-i18n="settings.guide_back" type="button">← Back to Menu</button>
+            data-i18n="settings.common.back" type="button">← Back to Menu</button>
         </div>
       </fieldset>
     </form>
   </div>
 
-  <!-- View 1.5: User Management -->
-  <div id="view-users" class="view">
+  <!-- View 1.4: Template Messages -->
+  <div id="view-template" class="view">
+    <header class="homey-header">
+      <h1 class="homey-title" data-i18n="settings.template.title">Template Messages</h1>
+    </header>
+
     <form class="homey-form">
       <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend" data-i18n="settings.users_title">User Management</legend>
         <div class="homey-form-group">
-          <p class="homey-text-regular" data-i18n="settings.users_description">Manage authorized numbers that can use
+          <p class="homey-text-regular" data-i18n="settings.template.description">Template Messages allow sending
+            messages even when the 24-hour service window has expired. To learn how to configure them, refer to the <a
+              href='#' class='open-guide'>Setup Guide</a>.</p>
+        </div>
+
+        <div class="homey-form-group">
+          <div
+            style="background-color: #fff3cd; color: #856404; padding: 12px; border-radius: 4px; border-left: 4px solid #ffeeba; margin-bottom: 15px;">
+            <p class="homey-text-small" style="margin: 0;" data-i18n="settings.template.warning">⚠️ CAUTION: Unlike the
+              standard free 24h service window, sending WhatsApp Template Messages is PAID according to Meta's rates for
+              Utility messages.</p>
+          </div>
+        </div>
+
+        <div class="homey-form-group">
+          <div class="homey-form-label-wrapper">
+            <label class="homey-form-label" for="template_name" data-i18n="settings.template.template_name">Fallback
+              Template Name</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.template.template_name_hint">&#9432;</span>
+          </div>
+          <input class="homey-form-input" id="template_name" type="text" value=""
+            placeholder="e.g. homey_notification" />
+        </div>
+
+        <div class="homey-form-group">
+          <div class="homey-form-label-wrapper">
+            <label class="homey-form-label" for="template_language"
+              data-i18n="settings.template.template_language">Fallback Template Language</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.template.template_language_hint">&#9432;</span>
+          </div>
+          <input class="homey-form-input" id="template_language" type="text" value="" placeholder="e.g. it" />
+        </div>
+
+        <div class="homey-form-group">
+          <div class="homey-form-label-wrapper">
+            <label class="homey-form-label" for="template_parameter_name"
+              data-i18n="settings.template.template_parameter_name">Variable Parameter Name</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.template.template_parameter_name_hint">&#9432;</span>
+          </div>
+          <input class="homey-form-input" id="template_parameter_name" type="text" value=""
+            placeholder="e.g. message" />
+        </div>
+
+        <div class="homey-form-group">
+          <button id="save_template" class="homey-button-primary-full" data-i18n="settings.common.save_template"
+            type="button">Save Template</button>
+        </div>
+
+        <div class="homey-form-group" style="margin-top: 20px;">
+          <button id="back_from_template" class="homey-button-transparent" style="padding-left: 0;"
+            data-i18n="settings.common.back" type="button">← Back to Menu</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+
+
+  <!-- View 1.5: User Management -->
+  <div id="view-users" class="view">
+    <header class="homey-header">
+      <h1 class="homey-title" data-i18n="settings.users.title">User Management</h1>
+    </header>
+
+    <form class="homey-form">
+      <fieldset class="homey-form-fieldset">
+        <div class="homey-form-group">
+          <p class="homey-text-regular" data-i18n="settings.users.description">Manage authorized numbers that can use
             the bot.</p>
         </div>
 
@@ -413,13 +519,14 @@
         </div>
 
         <div class="homey-form-group">
-          <button id="save_users" class="homey-button-primary-full" data-i18n="settings.save_users" type="button">Save
+          <button id="save_users" class="homey-button-primary-full" data-i18n="settings.common.save_users"
+            type="button">Save
             Names</button>
         </div>
 
         <div class="homey-form-group" style="margin-top: 20px;">
           <button id="back_from_users" class="homey-button-transparent" style="padding-left: 0;"
-            data-i18n="settings.guide_back" type="button">← Back to Menu</button>
+            data-i18n="settings.common.back" type="button">← Back to Menu</button>
         </div>
       </fieldset>
     </form>
@@ -427,30 +534,34 @@
 
   <!-- View 1.6: Voice Messages -->
   <div id="view-voice" class="view">
+    <header class="homey-header">
+      <h1 class="homey-title" data-i18n="settings.voice.title">Voice Messages</h1>
+    </header>
+
     <form class="homey-form">
       <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend" data-i18n="settings.voice_title">Voice Messages</legend>
         <div class="homey-form-group">
-          <p class="homey-text-regular" data-i18n="settings.voice_description">Configure API credentials for voice
+          <p class="homey-text-regular" data-i18n="settings.voice.description">Configure API credentials for voice
             message transcription.</p>
         </div>
 
         <div class="homey-form-group">
           <div class="homey-form-label-wrapper">
-            <label class="homey-form-label" for="groq_api_key" data-i18n="settings.groq_api_key">Groq API Key</label>
-            <span class="tooltip-icon" data-i18n-tooltip="settings.groq_api_key_hint">&#9432;</span>
+            <label class="homey-form-label" for="groq_api_key" data-i18n="settings.voice.groq_api_key">Groq API
+              Key</label>
+            <span class="tooltip-icon" data-i18n-tooltip="settings.voice.groq_api_key_hint">&#9432;</span>
           </div>
           <input class="homey-form-input" id="groq_api_key" type="text" value="" />
         </div>
 
         <div class="homey-form-group">
-          <button id="save_voice" class="homey-button-primary-full" data-i18n="settings.save" type="button">Save
+          <button id="save_voice" class="homey-button-primary-full" data-i18n="settings.common.save" type="button">Save
             Settings</button>
         </div>
 
         <div class="homey-form-group" style="margin-top: 20px;">
           <button id="back_from_voice" class="homey-button-transparent" style="padding-left: 0;"
-            data-i18n="settings.guide_back" type="button">← Back to Menu</button>
+            data-i18n="settings.common.back" type="button">← Back to Menu</button>
         </div>
       </fieldset>
     </form>
@@ -459,95 +570,117 @@
   <!-- View 2: Setup Guide -->
   <div id="view-guide" class="view">
     <header class="homey-header">
-      <h1 class="homey-title" data-i18n="settings.guide_title">Setup Guide</h1>
+      <h1 class="homey-title" data-i18n="settings.guide.title">Setup Guide</h1>
     </header>
 
     <form class="homey-form">
       <!-- SECTION 1: BOT CONFIGURATION -->
       <header class="homey-header" style="margin-top: 10px; margin-bottom: -10px;">
-        <h2 class="homey-title" data-i18n="settings.guide_section_bot">Bot Configuration</h2>
+        <h2 class="homey-title" data-i18n="settings.guide.section_bot">Bot Configuration</h2>
       </header>
 
       <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend" data-i18n="settings.guide_part1_title">Part 1: Create the Meta App</legend>
+        <legend class="homey-form-legend" data-i18n="settings.guide.part1_title">Part 1: Create the Meta App</legend>
         <div class="homey-form-group">
           <ol class="homey-text-regular">
-            <li data-i18n="settings.guide_part1_step1"></li>
-            <li data-i18n="settings.guide_part1_step2"></li>
-            <li data-i18n="settings.guide_part1_step3"></li>
-            <li data-i18n="settings.guide_part1_step4"></li>
-            <li data-i18n="settings.guide_part1_step5"></li>
-            <li data-i18n="settings.guide_part1_step6"></li>
+            <li data-i18n="settings.guide.part1_step1"></li>
+            <li data-i18n="settings.guide.part1_step2"></li>
+            <li data-i18n="settings.guide.part1_step3"></li>
+            <li data-i18n="settings.guide.part1_step4"></li>
+            <li data-i18n="settings.guide.part1_step5"></li>
+            <li data-i18n="settings.guide.part1_step6"></li>
           </ol>
         </div>
       </fieldset>
 
       <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend" data-i18n="settings.guide_part2_title">Part 2: Permanent Access Token
+        <legend class="homey-form-legend" data-i18n="settings.guide.part2_title">Part 2: Permanent Access Token
         </legend>
         <div class="homey-form-group">
           <ol class="homey-text-regular">
-            <li data-i18n="settings.guide_part2_step1"></li>
-            <li data-i18n="settings.guide_part2_step2"></li>
-            <li data-i18n="settings.guide_part2_step3"></li>
-            <li data-i18n="settings.guide_part2_step4"></li>
-            <li data-i18n="settings.guide_part2_step5"></li>
-            <li data-i18n="settings.guide_part2_step6"></li>
+            <li data-i18n="settings.guide.part2_step1"></li>
+            <li data-i18n="settings.guide.part2_step2"></li>
+            <li data-i18n="settings.guide.part2_step3"></li>
+            <li data-i18n="settings.guide.part2_step4"></li>
+            <li data-i18n="settings.guide.part2_step5"></li>
+            <li data-i18n="settings.guide.part2_step6"></li>
           </ol>
         </div>
       </fieldset>
 
 
       <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend" data-i18n="settings.guide_part3_title">Part 4: Configure Homey &amp; Webhook
+        <legend class="homey-form-legend" data-i18n="settings.guide.part3_title">Part 4: Configure Homey &amp; Webhook
         </legend>
         <div class="homey-form-group">
           <ol class="homey-text-regular">
-            <li data-i18n="settings.guide_part3_step1"></li>
-            <li data-i18n="settings.guide_part3_step2"></li>
-            <li data-i18n="settings.guide_part3_step3"></li>
-            <li data-i18n="settings.guide_part3_step4"></li>
-            <li data-i18n="settings.guide_part3_step5"></li>
+            <li data-i18n="settings.guide.part3_step1"></li>
+            <li data-i18n="settings.guide.part3_step2"></li>
+            <li data-i18n="settings.guide.part3_step3"></li>
+            <li data-i18n="settings.guide.part3_step4"></li>
+            <li data-i18n="settings.guide.part3_step5"></li>
           </ol>
         </div>
       </fieldset>
 
       <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend" data-i18n="settings.guide_part4_title">Part 5: First Bot Activation
+        <legend class="homey-form-legend" data-i18n="settings.guide.part4_title">Part 5: First Bot Activation
         </legend>
         <div class="homey-form-group">
           <ol class="homey-text-regular">
-            <li data-i18n="settings.guide_part4_step1"></li>
-            <li data-i18n="settings.guide_part4_step2"></li>
-            <li data-i18n="settings.guide_part4_step3"></li>
-            <li data-i18n="settings.guide_part4_step4"></li>
-            <li data-i18n="settings.guide_part4_step5"></li>
-            <li data-i18n="settings.guide_part4_step6"></li>
-            <li data-i18n="settings.guide_part4_step7"></li>
+            <li data-i18n="settings.guide.part4_step1"></li>
+            <li data-i18n="settings.guide.part4_step2"></li>
+            <li data-i18n="settings.guide.part4_step3"></li>
+            <li data-i18n="settings.guide.part4_step4"></li>
+            <li data-i18n="settings.guide.part4_step5"></li>
+            <li data-i18n="settings.guide.part4_step6"></li>
+            <li data-i18n="settings.guide.part4_step7"></li>
           </ol>
         </div>
       </fieldset>
 
-      <!-- SECTION 2: VOICE MESSAGES CONFIGURATION -->
+      <!-- SECTION 2: TEMPLATE MESSAGES CONFIGURATION -->
       <header class="homey-header" style="margin-top: 30px; margin-bottom: -10px;">
-        <h2 class="homey-title" data-i18n="settings.guide_section_voice">Voice Messages Configuration</h2>
+        <h2 class="homey-title" data-i18n="settings.guide.section_template">Template Messages Configuration</h2>
       </header>
 
       <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend" data-i18n="settings.guide_part_voice_title">Groq API Key</legend>
+        <!-- <legend class="homey-form-legend" data-i18n="settings.guide.part_template_title">Create the Fallback Template (Optional)</legend> -->
+        <div class="homey-form-group">
+          <p class="homey-text-regular" data-i18n="settings.guide.part_template_description"></p>
+        </div>
         <div class="homey-form-group">
           <ol class="homey-text-regular">
-            <li data-i18n="settings.guide_part_voice_step1"></li>
-            <li data-i18n="settings.guide_part_voice_step2"></li>
-            <li data-i18n="settings.guide_part_voice_step3"></li>
-            <li data-i18n="settings.guide_part_voice_step4"></li>
+            <li data-i18n="settings.guide.part_template_step1"></li>
+            <li data-i18n="settings.guide.part_template_step2"></li>
+            <li data-i18n="settings.guide.part_template_step3"></li>
+            <li data-i18n="settings.guide.part_template_step4"></li>
+            <li data-i18n="settings.guide.part_template_step5"></li>
+          </ol>
+        </div>
+      </fieldset>
+
+
+      <!-- SECTION 3: VOICE MESSAGES CONFIGURATION -->
+      <header class="homey-header" style="margin-top: 30px; margin-bottom: -10px;">
+        <h2 class="homey-title" data-i18n="settings.guide.section_voice">Voice Messages Configuration</h2>
+      </header>
+
+      <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend" data-i18n="settings.guide.part_voice_title">Groq API Key</legend>
+        <div class="homey-form-group">
+          <ol class="homey-text-regular">
+            <li data-i18n="settings.guide.part_voice_step1"></li>
+            <li data-i18n="settings.guide.part_voice_step2"></li>
+            <li data-i18n="settings.guide.part_voice_step3"></li>
+            <li data-i18n="settings.guide.part_voice_step4"></li>
           </ol>
         </div>
       </fieldset>
 
       <div class="homey-form-group" style="margin-top: 20px;">
         <button id="back_from_guide" class="homey-button-transparent" style="padding-left: 0;"
-          data-i18n="settings.guide_back" type="button">← Back to Menu</button>
+          data-i18n="settings.common.back" type="button">← Back to Menu</button>
       </div>
     </form>
   </div>
@@ -590,6 +723,7 @@
       // SPA Navigation
       const viewMenu = document.getElementById('view-menu');
       const viewSettings = document.getElementById('view-settings');
+      const viewTemplate = document.getElementById('view-template');
       const viewUsers = document.getElementById('view-users');
       const viewVoice = document.getElementById('view-voice');
       const viewGuide = document.getElementById('view-guide');
@@ -600,6 +734,7 @@
       }
 
       document.getElementById('nav_config').addEventListener('click', () => switchView(viewSettings));
+      document.getElementById('nav_template').addEventListener('click', () => switchView(viewTemplate));
       document.getElementById('nav_voice').addEventListener('click', () => switchView(viewVoice));
       document.getElementById('nav_users').addEventListener('click', () => {
         loadUsers();
@@ -608,6 +743,7 @@
       document.getElementById('open_guide_menu').addEventListener('click', () => switchView(viewGuide));
 
       document.getElementById('back_from_config').addEventListener('click', () => switchView(viewMenu));
+      document.getElementById('back_from_template').addEventListener('click', () => switchView(viewMenu));
       document.getElementById('back_from_voice').addEventListener('click', () => switchView(viewMenu));
       document.getElementById('back_from_users').addEventListener('click', () => switchView(viewMenu));
       document.getElementById('back_from_guide').addEventListener('click', () => switchView(viewMenu));
@@ -623,6 +759,12 @@
         } else if (e.target && e.target.classList.contains('open-groq-console')) {
           e.preventDefault();
           Homey.popup('https://console.groq.com');
+        } else if (e.target && e.target.classList.contains('open-meta-pricing')) {
+          e.preventDefault();
+          Homey.popup('https://business.whatsapp.com/products/platform-pricing');
+        } else if (e.target && e.target.classList.contains('open-guide')) {
+          e.preventDefault();
+          switchView(viewGuide);
         }
       });
 
@@ -649,6 +791,25 @@
         if (value) verify_token_el.value = value;
       });
 
+      var template_name_el = document.getElementById('template_name');
+      var template_language_el = document.getElementById('template_language');
+      var template_parameter_name_el = document.getElementById('template_parameter_name');
+
+      Homey.get('template_name', function (err, value) {
+        if (err) return showToast(err.message || err, 'error');
+        if (value) template_name_el.value = value;
+      });
+
+      Homey.get('template_language', function (err, value) {
+        if (err) return showToast(err.message || err, 'error');
+        if (value) template_language_el.value = value;
+      });
+
+      Homey.get('template_parameter_name', function (err, value) {
+        if (err) return showToast(err.message || err, 'error');
+        if (value) template_parameter_name_el.value = value;
+      });
+
       Homey.get('groq_api_key', function (err, value) {
         if (err) return showToast(err.message || err, 'error');
         if (value) groq_api_key_el.value = value;
@@ -657,7 +818,7 @@
       // Fetch the Webhook URL from the app's API
       Homey.api('GET', '/webhookUrl', null, function (err, url) {
         if (err) {
-          webhook_url_el.value = Homey.__('settings.webhook_url_loading') || '...';
+          webhook_url_el.value = Homey.__('settings.config.webhook_url_loading') || '...';
         } else {
           webhook_url_el.value = url;
         }
@@ -678,7 +839,7 @@
       document.getElementById('save').addEventListener('click', function () {
         const verifyTokenVal = verify_token_el.value;
         if (verifyTokenVal && verifyTokenVal.indexOf(' ') >= 0) {
-          return showToast(Homey.__('settings.error_verify_token_spaces') || 'The Verify Token cannot contain spaces.', 'error');
+          return showToast(Homey.__('settings.config.error_verify_token_spaces') || 'The Verify Token cannot contain spaces.', 'error');
         }
 
         Homey.set('access_token', access_token_el.value, function (err) {
@@ -692,7 +853,23 @@
         });
 
         // Show toast instead of alert on success
-        showToast(Homey.__('settings.save_success') || 'Settings saved successfully', 'success');
+        showToast(Homey.__('settings.common.save_success') || 'Settings saved successfully', 'success');
+      });
+
+      // Save template settings
+      document.getElementById('save_template').addEventListener('click', function () {
+        Homey.set('template_name', template_name_el.value.trim(), function (err) {
+          if (err) return showToast(err.message || err, 'error');
+        });
+        Homey.set('template_language', template_language_el.value.trim(), function (err) {
+          if (err) return showToast(err.message || err, 'error');
+        });
+        Homey.set('template_parameter_name', template_parameter_name_el.value.trim(), function (err) {
+          if (err) return showToast(err.message || err, 'error');
+        });
+
+        // Show toast instead of alert on success
+        showToast(Homey.__('settings.common.save_success') || 'Settings saved successfully', 'success');
       });
 
       // Save voice settings
@@ -702,7 +879,7 @@
         });
 
         // Show toast instead of alert on success
-        showToast(Homey.__('settings.save_success') || 'Settings saved successfully', 'success');
+        showToast(Homey.__('settings.common.save_success') || 'Settings saved successfully', 'success');
       });
 
       // User Management logic
@@ -716,7 +893,7 @@
           const p = document.createElement('p');
           p.className = 'homey-text-small';
           p.style.fontStyle = 'italic';
-          p.textContent = Homey.__('settings.users_empty');
+          p.textContent = Homey.__('settings.users.empty');
           container.appendChild(p);
           return;
         }
@@ -731,7 +908,7 @@
           // Top row: phone number as title
           const phoneLabel = document.createElement('div');
           phoneLabel.className = 'user-phone-label';
-          phoneLabel.textContent = Homey.__('settings.users_phone_label') + ': ' + user.id;
+          phoneLabel.textContent = Homey.__('settings.users.phone_label') + ': ' + user.id;
 
           // Bottom row: name input + delete button
           const detailsRow = document.createElement('div');
@@ -742,14 +919,14 @@
           nameInput.type = 'text';
           nameInput.dataset.index = index;
           nameInput.value = user.name || user.id;
-          nameInput.placeholder = Homey.__('settings.users_name_placeholder');
+          nameInput.placeholder = Homey.__('settings.users.name_placeholder');
 
           const deleteBtn = document.createElement('button');
           deleteBtn.className = 'homey-button-danger';
           deleteBtn.type = 'button';
           deleteBtn.dataset.index = index;
           deleteBtn.dataset.action = 'delete';
-          deleteBtn.textContent = Homey.__('settings.users_delete');
+          deleteBtn.textContent = Homey.__('settings.users.delete');
 
           detailsRow.appendChild(nameInput);
           detailsRow.appendChild(deleteBtn);
@@ -777,7 +954,7 @@
           const phone = currentUsers[idx] && currentUsers[idx].id;
           if (!phone) return;
 
-          Homey.confirm(Homey.__('settings.users_delete_confirm'), 'warning', function (err, confirmed) {
+          Homey.confirm(Homey.__('settings.users.delete_confirm'), 'warning', function (err, confirmed) {
             if (err || !confirmed) return;
 
             Homey.api('DELETE', '/user/' + encodeURIComponent(phone), null, function (apiErr, result) {
@@ -785,7 +962,7 @@
                 showToast((result && result.error) || String(apiErr) || 'Error', 'error');
                 return;
               }
-              showToast(Homey.__('settings.save_success'), 'success');
+              showToast(Homey.__('settings.common.save_success'), 'success');
               loadUsers(); // Reload from server after deletion
             });
           });
@@ -808,7 +985,7 @@
 
         Homey.set('allowed_users', currentUsers, function (err) {
           if (err) return showToast(err.message || err, 'error');
-          showToast(Homey.__('settings.save_success'), 'success');
+          showToast(Homey.__('settings.common.save_success'), 'success');
         });
       });
     }
