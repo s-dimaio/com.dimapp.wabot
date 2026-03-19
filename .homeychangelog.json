@@ -28,7 +28,11 @@
     "it": "Aggiunto supporto completo ai Messaggi Vocali: ora puoi inviare messaggi audio e il bot li trascriverà usando le API Whisper di Groq. Aggiunta una sezione dedicata nelle Impostazioni per la configurazione."
   },
   "1.2.0": {
-    "en": "Added support for WhatsApp Template Messages: you can now send messages even when the 24-hour service window is closed (fallback). Added dedicated Template Configuration section in App settings.",
-    "it": "Aggiunto supporto ai Messaggi Template WhatsApp: ora puoi inviare messaggi anche quando la finestra di servizio di 24 ore è chiusa (fallback). Aggiunta una sezione dedicata nelle Impostazioni per la configurazione dei Template."
+    "en": "Added full support for WhatsApp Template Messages (fallback when 24h window is closed) with dedicated configuration UI.",
+    "it": "Aggiunto supporto completo ai Messaggi Template WhatsApp (fallback) con interfaccia di configurazione dedicata."
+  },
+  "1.2.1": {
+    "en": "Added 'Message failed to send' Flow Trigger for better error handling.",
+    "it": "Aggiunto il Flow Trigger 'Messaggio non inviato' per una migliore gestione degli errori."
   }
 }
