@@ -50,12 +50,16 @@
             "title": "Messaggi Template",
             "description": "I Messaggi Template permettono di inviare messaggi anche quando è scaduta la finestra di 24 ore stabilita da Meta per i messaggi liberi. Per imparare come configurarli consulta la <a href='#' class='open-guide'>Guida alla configurazione</a>.",
             "warning": "⚠️ ATTENZIONE: i Messaggi Template sono gratuiti fintanto che usi il numero di test fornito da Meta. Se sostituisci il numero di test con un numero reale i Messaggi Template diventano a pagamento secondo le tariffe di Meta.",
-            "template_name": "Nome Template di Fallback",
-            "template_name_hint": "Nome del template approvato su Meta Business Manager (es. homey_notification). Usato automaticamente se la finestra di 24h è scaduta.",
-            "template_language": "Lingua Template di Fallback",
+            "template_name": "Nome Template",
+            "template_name_hint": "Nome del template approvato su Meta Business Manager (es. homey_notification).",
+            "template_language": "Lingua",
             "template_language_hint": "Codice lingua del template (es. it, en_US).",
-            "template_parameter_name": "Nome Parametro Variabile",
-            "template_parameter_name_hint": "Nome della variabile nel template Meta (es. 'message' per {{message}})."
+            "template_parameter_name": "Nome Parametro",
+            "template_parameter_name_hint": "Nome della variabile nel template Meta (es. 'message' per {{message}}). Lasciare vuoto per variabili numeriche (es. {{1}}).",
+            "test_button": "Testa Template",
+            "test_error_missing_config": "Compila Nome e Lingua del template prima di testare.",
+            "test_error_no_users": "Nessun utente autorizzato. Registra un numero prima di testare.",
+            "test_success": "Messaggio di test inviato a __phone__ con successo."
         },
         "users": {
             "title": "Gestione Utenti",
@@ -93,7 +97,7 @@
             "part2_step6": "Copia subito il token — verrà mostrato una sola volta.",
             "part3_title": "Parte 3: Configura Homey e il Webhook",
             "part3_step1": "Torna alla pagina di Configurazione nelle impostazioni dell'app Homey e compila Token e ID numero.",
-            "part3_step2": "Sempre dalla pagina di Configurazione copia il l'URL del Webhook e assegna quindi un Token di verifica a tua scelta (ti servirà sia per completare il processo di autenticazione su Meta che più avanti per registrarti sul bot). Unna volta fatto salva le impostazioni.",
+            "part3_step2": "Sempre dalla pagina di Configurazione copia il l'URL del Webhook e assegna quindi un Token di verifica a tua scelta (ti servirà sia per completare il processo di autenticazione su Meta che più avanti per registrarti sul bot). Una volta fatto salva le impostazioni.",
             "part3_step3": "Torna nella pagina della tua App Meta -> 'Casi d'uso' -> 'Personalizza' -> 'Configurazione' e vai nella sezione Webhook.",
             "part3_step4": "Incolla l'URL Webhook come 'URL di Callback' e inserisci il tuo Token di verifica. Una volta fatto premi 'Verifica e salva'.",
             "part3_step5": "Terminato il processo di verifica torna al menù 'Configurazione' e attiva l'iscrizione per il campo webhook 'messages'.",
@@ -120,8 +124,11 @@
         }
     },
     "flow": {
+        "all_contacts_label": "Tutti i Contatti",
+        "all_contacts_description": "Invia a tutti i contatti registrati",
         "action_error_both_recipients": "Compila SOLO un campo destinatario (Contatto oppure Numero).",
-        "action_error_no_recipient": "Compila ALMENO un campo destinatario (Contatto o Numero)."
+        "action_error_no_recipient": "Compila ALMENO un campo destinatario (Contatto o Numero).",
+        "action_error_no_users_registered": "Nessun utente registrato trovato. Chiedi agli utenti di inviare /register al bot prima di procedere."
     },
     "bot": {
         "registration_required": "Non sei autorizzato ad usare questo Bot. Per registrarti hai bisogno di conoscere il *codice segreto* (se non lo conosci contatta l'amministratore del Bot). Una volta che avrai il codice segreto rispondi a questa chat con il comando:\n\n*/register [codice_segreto]*",

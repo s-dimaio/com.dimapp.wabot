@@ -50,12 +50,16 @@
             "title": "Template Messages",
             "description": "Template Messages allow sending messages even when the 24-hour service window has expired. To learn how to configure them, refer to the <a href='#' class='open-guide'>Setup Guide</a>.",
             "warning": "⚠️ CAUTION: Template Messages are free as long as you use the test number provided by Meta. However, if you replace the test number with a real phone number, Template Messages become paid according to Meta's rates.",
-            "template_name": "Fallback Template Name",
-            "template_name_hint": "Name of the approved template on Meta Business Manager (e.g. homey_notification). Used automatically if the 24h window has expired.",
-            "template_language": "Fallback Template Language",
+            "template_name": "Template Name",
+            "template_name_hint": "Name of the approved template on Meta Business Manager (e.g. homey_notification).",
+            "template_language": "Language",
             "template_language_hint": "Language code of the template (e.g. en_US, it).",
-            "template_parameter_name": "Variable Parameter Name",
-            "template_parameter_name_hint": "Name of the variable in the Meta template (e.g. 'message' for {{message}})."
+            "template_parameter_name": "Parameter Name",
+            "template_parameter_name_hint": "Name of the variable in the Meta template (e.g. 'message' for {{message}}). Leave empty for numeric variables (e.g. {{1}}).",
+            "test_button": "Test Template",
+            "test_error_missing_config": "Fill in Template Name and Language before testing.",
+            "test_error_no_users": "No authorized users. Register a number before testing.",
+            "test_success": "Test message sent to __phone__ successfully."
         },
         "users": {
             "title": "User Management",
@@ -120,8 +124,11 @@
         }
     },
     "flow": {
+        "all_contacts_label": "All Contacts",
+        "all_contacts_description": "Send to all registered contacts",
         "action_error_both_recipients": "Please fill ONLY one recipient field (either Contact or Number).",
-        "action_error_no_recipient": "Please fill AT LEAST one recipient field (Contact or Number)."
+        "action_error_no_recipient": "Please fill AT LEAST one recipient field (Contact or Number).",
+        "action_error_no_users_registered": "No registered users found. Ask users to send /register to the bot first."
     },
     "bot": {
         "registration_required": "You are not authorized to use this Bot. To register you need to know the *secret code* (if you don't know it contact the Bot administrator). Once you have the secret code reply to this chat with the command:\n\n*/register [secret_code]*",

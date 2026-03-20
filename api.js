@@ -264,4 +264,31 @@ module.exports = {
         return { success: true };
     },
 
+    /**
+     * POST /api/app/com.dimapp.wabot/testTemplate
+     * Sends a test template message.
+     * Called by the Settings page via Homey.api().
+     * @param {object} args - Arguments passed by Homey API.
+     * @param {object} args.homey - Homey instance.
+     * @param {object} args.body - Request body.
+     * @param {string} args.body.phone - The phone number to send the test message to.
+     * @returns {Promise<{success: boolean, error?: string}>} Result of the operation.
+     * @public
+     */
+    async postTestTemplate({ homey, body }) {
+        const phone = body && body.phone;
+        if (!phone) {
+            throw new Error('Phone number is required');
+        }
+
+        try {
+            homey.log(`[API] Triggered test template message to ${homey.app._maskPhoneNumber(phone)}`);
+            await homey.app.sendWhatsappTemplateMessage(phone, "Test message da Homey");
+            return { success: true };
+        } catch (error) {
+            homey.error('Error sending test template message:', error);
+            throw new Error(error.message || 'Error sending test message');
+        }
+    },
+
 };

@@ -40,21 +40,35 @@ module.exports = class WhatsAppBotApp extends Homey.App {
     // Register Flow Action Card
     const sendMessageAction = this.homey.flow.getActionCard('send_whatsapp_message');
 
-    // Provide authorized users to the autocomplete dropdown for the contact field
+    // Provide authorized users to the autocomplete dropdown for the contact field.
+    // The first entry is a special "All Contacts" option that sends to every registered user.
     sendMessageAction.registerArgumentAutocompleteListener('recipient_contact', async (query, args) => {
       const users = this.getAllowedUsers();
+
+      const allOption = {
+        name: this.homey.__('flow.all_contacts_label'),
+        description: this.homey.__('flow.all_contacts_description'),
+        id: '__ALL__'
+      };
+
       const results = users.map(user => ({
         name: user.name || user.id,
         description: user.id,
         id: user.id
       }));
 
-      // Filter based on user search query
+      // Filter individual contacts based on user search query
       const lowerQuery = query.toLowerCase();
-      return results.filter(res =>
+      const filtered = results.filter(res =>
         res.name.toLowerCase().includes(lowerQuery) ||
         res.id.includes(lowerQuery)
       );
+
+      // Always show the "All" option first, filtered only when the query does not match it
+      const allMatches = allOption.name.toLowerCase().includes(lowerQuery) ||
+        allOption.description.toLowerCase().includes(lowerQuery);
+
+      return allMatches ? [allOption, ...filtered] : filtered;
     });
 
     sendMessageAction.registerRunListener(async (args, state) => {
@@ -73,9 +87,33 @@ module.exports = class WhatsAppBotApp extends Homey.App {
         throw new Error(this.homey.__('flow.action_error_no_recipient'));
       }
 
-      const recipient = hasContact ? byContact.id : byNumber.trim();
+      /** @type {string[]} */
+      let recipients = [];
 
-      await this.sendWhatsappMessage(recipient, args.message_text);
+      if (hasContact) {
+        if (byContact.id === '__ALL__') {
+          // Send to all registered users
+          recipients = this.getAllowedUsers().map(u => u.id);
+          if (recipients.length === 0) {
+            throw new Error(this.homey.__('flow.action_error_no_users_registered'));
+          }
+        } else {
+          recipients = [byContact.id];
+        }
+      } else {
+        // Support multiple numbers separated by ";"
+        recipients = byNumber.split(';').map(n => n.trim()).filter(n => n.length > 0);
+        if (recipients.length === 0) {
+          throw new Error(this.homey.__('flow.action_error_no_recipient'));
+        }
+      }
+
+      // WhatsApp Cloud API does not support batch sending: one API call per recipient
+      for (const recipient of recipients) {
+        this.log(`Sending to recipient ${this._maskPhoneNumber(recipient)}...`);
+        await this.sendWhatsappMessage(recipient, args.message_text);
+      }
+
       return true;
     });
   }
