@@ -277,13 +277,17 @@ module.exports = {
      */
     async postTestTemplate({ homey, body }) {
         const phone = body && body.phone;
+        const templateName = body && body.templateName;
+        const templateLang = body && body.templateLang;
+        const templateParam = body && body.templateParam;
+
         if (!phone) {
             throw new Error('Phone number is required');
         }
 
         try {
             homey.log(`[API] Triggered test template message to ${homey.app._maskPhoneNumber(phone)}`);
-            await homey.app.sendWhatsappTemplateMessage(phone, "Test message da Homey");
+            await homey.app.sendWhatsappTemplateMessage(phone, "Test message da Homey", templateName, templateLang, templateParam);
             return { success: true };
         } catch (error) {
             homey.error('Error sending test template message:', error);

@@ -287,14 +287,17 @@ module.exports = class WhatsAppBotApp extends Homey.App {
    * This is used as a fallback when the 24h window has expired.
    * @param {string} recipient - The phone number to send the message to.
    * @param {string} text - The content of the message to inject in the template variable.
+   * @param {string} [overrideName] - Optional override for the template name (used by Test UI).
+   * @param {string} [overrideLanguage] - Optional override for the template language (used by Test UI).
+   * @param {string} [overrideParamName] - Optional override for the template parameter name (used by Test UI).
    * @public
    */
-  async sendWhatsappTemplateMessage(recipient, text) {
+  async sendWhatsappTemplateMessage(recipient, text, overrideName, overrideLanguage, overrideParamName) {
     const accessToken = this.homey.settings.get('access_token');
     const phoneId = this.homey.settings.get('phone_id');
-    const templateName = this.homey.settings.get('template_name');
-    const templateLanguage = this.homey.settings.get('template_language');
-    const templateParameterName = this.homey.settings.get('template_parameter_name');
+    const templateName = overrideName || this.homey.settings.get('template_name');
+    const templateLanguage = overrideLanguage || this.homey.settings.get('template_language');
+    const templateParameterName = overrideParamName !== undefined ? overrideParamName : this.homey.settings.get('template_parameter_name');
 
     if (!templateName || !templateLanguage) {
       throw new Error(this.homey.__('bot.template_fallback_error'));

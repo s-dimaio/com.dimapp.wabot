@@ -115,7 +115,9 @@
       pointer-events: none;
       z-index: 1000;
       text-align: center;
-      white-space: nowrap;
+      max-width: 80%;
+      width: max-content;
+      word-wrap: break-word;
     }
 
     .toast.show {
@@ -878,6 +880,7 @@
       document.getElementById('test_template').addEventListener('click', function () {
         const tName = template_name_el.value.trim();
         const tLang = template_language_el.value.trim();
+        const tParam = template_parameter_name_el.value.trim();
 
         if (!tName || !tLang) {
           return showToast(Homey.__('settings.template.test_error_missing_config'), 'error');
@@ -892,7 +895,14 @@
 
           const phone = users[0].id;
 
-          Homey.api('POST', '/testTemplate', { phone: phone }, function(apiErr, result) {
+          const payload = {
+            phone: phone,
+            templateName: tName,
+            templateLang: tLang,
+            templateParam: tParam
+          };
+
+          Homey.api('POST', '/testTemplate', payload, function(apiErr, result) {
             if (apiErr) return showToast(apiErr.message || apiErr, 'error');
             
             const successMsg = Homey.__('settings.template.test_success', { phone: phone });
