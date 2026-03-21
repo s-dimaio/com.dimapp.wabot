@@ -44,7 +44,8 @@
             "webhook_url_label": "URL Webhook (per Meta)",
             "webhook_url_hint": "Copia questo URL e incollalo nel Portale Sviluppatori di Meta come URL di Callback.",
             "webhook_url_copy": "Copia",
-            "webhook_url_loading": "Caricamento..."
+            "webhook_url_loading": "Caricamento...",
+            "save_success": "Credenziali Meta salvate correttamente"
         },
         "template": {
             "title": "Messaggi Template",
@@ -54,8 +55,9 @@
             "template_name_hint": "Nome del template approvato su Meta Business Manager (es. homey_notification).",
             "template_language": "Lingua",
             "template_language_hint": "Codice lingua del template (es. it, en_US).",
-            "template_parameter_name": "Nome Parametro",
+            "template_parameter_name": "Nome Parametro Variabile",
             "template_parameter_name_hint": "Nome della variabile nel template Meta (es. 'message' per {{message}}). Lasciare vuoto per variabili numeriche (es. {{1}}).",
+            "save_success": "Configurazione Template salvata",
             "test_button": "Testa Template",
             "test_error_missing_config": "Compila Nome e Lingua del template prima di testare.",
             "test_error_no_users": "Nessun utente autorizzato. Registra un numero prima di testare.",
@@ -68,13 +70,16 @@
             "name_placeholder": "Nome contatto",
             "delete": "Rimuovi",
             "delete_confirm": "Rimuovere questo numero dalla lista degli autorizzati?",
-            "phone_label": "Cell"
+            "phone_label": "Cell",
+            "save_success": "Nomi contatti salvati con successo",
+            "delete_success": "Numero rimosso correttamente"
         },
         "voice": {
             "title": "Messaggi Vocali",
             "description": "Configura le credenziali API per la trascrizione dei messaggi vocali. Per qualsiasi dubbio puoi consultare la <a href='#' class='open-guide'>Guida alla configurazione</a>.",
             "groq_api_key": "Groq API Key",
-            "groq_api_key_hint": "Chiave API di GroqCloud (console.groq.com). Necessaria per la trascrizione dei messaggi vocali tramite Whisper."
+            "groq_api_key_hint": "Chiave API di GroqCloud (console.groq.com). Necessaria per la trascrizione dei messaggi vocali tramite Whisper.",
+            "save_success": "Chiave API Groq salvata"
         },
         "guide": {
             "title": "Guida alla Configurazione",

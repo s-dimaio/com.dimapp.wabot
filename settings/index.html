@@ -476,14 +476,16 @@
                 data-i18n="settings.template.template_language">Language</label>
               <span class="tooltip-icon" data-i18n-tooltip="settings.template.template_language_hint">&#9432;</span>
             </div>
-            <input class="homey-form-input" id="template_language" type="text" value="" placeholder="e.g. it" maxlength="5" />
+            <input class="homey-form-input" id="template_language" type="text" value="" placeholder="e.g. it"
+              maxlength="5" />
           </div>
 
           <div style="flex: 2;">
             <div class="homey-form-label-wrapper">
               <label class="homey-form-label" for="template_parameter_name"
                 data-i18n="settings.template.template_parameter_name">Parameter Name</label>
-              <span class="tooltip-icon" data-i18n-tooltip="settings.template.template_parameter_name_hint">&#9432;</span>
+              <span class="tooltip-icon"
+                data-i18n-tooltip="settings.template.template_parameter_name_hint">&#9432;</span>
             </div>
             <input class="homey-form-input" id="template_parameter_name" type="text" value=""
               placeholder="e.g. message" />
@@ -491,8 +493,10 @@
         </div>
 
         <div class="homey-form-group" style="display: flex; gap: 10px;">
-          <button id="save_template" class="homey-button-primary" data-i18n="settings.common.save_template" type="button" style="flex: 2;">Save Template</button>
-          <button id="test_template" class="homey-button-secondary" data-i18n="settings.template.test_button" type="button" style="flex: 1;">Test Template</button>
+          <button id="save_template" class="homey-button-primary-shadow" data-i18n="settings.common.save_template"
+            type="button" style="flex: 2;">Save Template</button>
+          <button id="test_template" class="homey-button-secondary-shadow" data-i18n="settings.template.test_button"
+            type="button" style="flex: 1;">Test Template</button>
         </div>
 
         <div class="homey-form-group" style="margin-top: 20px;">
@@ -857,7 +861,7 @@
         });
 
         // Show toast instead of alert on success
-        showToast(Homey.__('settings.common.save_success') || 'Settings saved successfully', 'success');
+        showToast(Homey.__('settings.config.save_success') || 'Settings saved successfully', 'success');
       });
 
       // Save template settings
@@ -873,7 +877,7 @@
         });
 
         // Show toast instead of alert on success
-        showToast(Homey.__('settings.common.save_success') || 'Settings saved successfully', 'success');
+        showToast(Homey.__('settings.template.save_success') || 'Settings saved successfully', 'success');
       });
 
       // Test template message
@@ -886,9 +890,9 @@
           return showToast(Homey.__('settings.template.test_error_missing_config'), 'error');
         }
 
-        Homey.get('allowed_users', function(err, users) {
+        Homey.get('allowed_users', function (err, users) {
           if (err) return showToast(err.message || err, 'error');
-           
+
           if (!users || users.length === 0) {
             return showToast(Homey.__('settings.template.test_error_no_users'), 'error');
           }
@@ -902,9 +906,9 @@
             templateParam: tParam
           };
 
-          Homey.api('POST', '/testTemplate', payload, function(apiErr, result) {
+          Homey.api('POST', '/testTemplate', payload, function (apiErr, result) {
             if (apiErr) return showToast(apiErr.message || apiErr, 'error');
-            
+
             const successMsg = Homey.__('settings.template.test_success', { phone: phone });
             showToast(successMsg, 'success');
           });
@@ -918,7 +922,7 @@
         });
 
         // Show toast instead of alert on success
-        showToast(Homey.__('settings.common.save_success') || 'Settings saved successfully', 'success');
+        showToast(Homey.__('settings.voice.save_success') || 'Settings saved successfully', 'success');
       });
 
       // User Management logic
@@ -1001,7 +1005,7 @@
                 showToast((result && result.error) || String(apiErr) || 'Error', 'error');
                 return;
               }
-              showToast(Homey.__('settings.common.save_success'), 'success');
+              showToast(Homey.__('settings.users.delete_success'), 'success');
               loadUsers(); // Reload from server after deletion
             });
           });
@@ -1024,7 +1028,7 @@
 
         Homey.set('allowed_users', currentUsers, function (err) {
           if (err) return showToast(err.message || err, 'error');
-          showToast(Homey.__('settings.common.save_success'), 'success');
+          showToast(Homey.__('settings.users.save_success'), 'success');
         });
       });
     }

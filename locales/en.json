@@ -44,7 +44,8 @@
             "webhook_url_label": "Webhook URL (for Meta)",
             "webhook_url_hint": "Copy this URL and paste it in the Meta Developer Portal as the Callback URL.",
             "webhook_url_copy": "Copy",
-            "webhook_url_loading": "Loading..."
+            "webhook_url_loading": "Loading...",
+            "save_success": "Meta credentials saved successfully"
         },
         "template": {
             "title": "Template Messages",
@@ -54,8 +55,9 @@
             "template_name_hint": "Name of the approved template on Meta Business Manager (e.g. homey_notification).",
             "template_language": "Language",
             "template_language_hint": "Language code of the template (e.g. en_US, it).",
-            "template_parameter_name": "Parameter Name",
+            "template_parameter_name": "Variable Parameter Name",
             "template_parameter_name_hint": "Name of the variable in the Meta template (e.g. 'message' for {{message}}). Leave empty for numeric variables (e.g. {{1}}).",
+            "save_success": "Template configuration saved",
             "test_button": "Test Template",
             "test_error_missing_config": "Fill in Template Name and Language before testing.",
             "test_error_no_users": "No authorized users. Register a number before testing.",
@@ -68,13 +70,16 @@
             "name_placeholder": "Contact name",
             "delete": "Remove",
             "delete_confirm": "Remove this number from the authorized list?",
-            "phone_label": "Mobile"
+            "phone_label": "Mobile",
+            "save_success": "Contact names saved successfully",
+            "delete_success": "Number removed successfully"
         },
         "voice": {
             "title": "Voice Messages",
             "description": "Configure API credentials for voice message transcription. For any questions, you can refer to the <a href='#' class='open-guide'>Setup Guide</a>.",
             "groq_api_key": "Groq API Key",
-            "groq_api_key_hint": "GroqCloud API key (console.groq.com). Required for transcribing voice messages via Whisper."
+            "groq_api_key_hint": "GroqCloud API key (console.groq.com). Required for transcribing voice messages via Whisper.",
+            "save_success": "Groq API key saved"
         },
         "guide": {
             "title": "Setup Guide",

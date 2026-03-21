@@ -42,5 +42,9 @@
   "1.3.1": {
     "en": "(i) Added support for sending messages to multiple phone numbers (separated by a semicolon); \n(ii) Added 'All Contacts' option to send a message to all registered users at once; \n(iii) Added the ability in the App Settings to test the functionality of template messages immediately after their configuration.",
     "it": "(i) Aggiunto il supporto per l'invio di messaggi a più numeri di telefono (separati da un punto e virgola); \n(ii) Aggiunta l'opzione 'Tutti i Contatti' per inviare un messaggio a tutti gli utenti registrati contemporaneamente; \n(iii) Aggiunta la possibilità nelle Impostazioni dell'app di testare il funzionamento dei messaggi template subito dopo la loro configurazione."
+  },
+  "1.3.2": {
+    "en": "(i) Added support for sending messages to multiple phone numbers (separated by a semicolon); \n(ii) Added 'All Contacts' option to send a message to all registered users at once; \n(iii) Added the ability in the App Settings to test the functionality of template messages immediately after their configuration.",
+    "it": "(i) Aggiunto il supporto per l'invio di messaggi a più numeri di telefono (separati da un punto e virgola); \n(ii) Aggiunta l'opzione 'Tutti i Contatti' per inviare un messaggio a tutti gli utenti registrati contemporaneamente; \n(iii) Aggiunta la possibilità nelle Impostazioni dell'app di testare il funzionamento dei messaggi template subito dopo la loro configurazione."
   }
 }
